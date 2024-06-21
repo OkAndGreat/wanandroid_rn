@@ -1,6 +1,7 @@
 import React, {PureComponent} from "react";
 import {StyleSheet, Text, View} from "react-native";
 import {connect} from "react-redux";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 class HomeScreen extends PureComponent {
     constructor() {
