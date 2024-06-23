@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useRef} from "react";
 import {setAxios} from "./src/utils/setAxios";
 import {Provider} from "react-redux";
 import store from "./src/store";
@@ -11,6 +11,8 @@ import MineScreen from "./src/pages/mine/MineScreen";
 import {BottomTabName} from "./src/utils/Constant";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {StatusBar, View} from "react-native";
+import "./src/components/RootView"
+import Toast from "./src/components/Toast";
 
 
 const Tab = createBottomTabNavigator();
@@ -19,7 +21,6 @@ function App() {
     useEffect(() => {
         setAxios()
     }, []);
-
 
     return (
         <Provider store={store}>
@@ -37,17 +38,17 @@ function App() {
                                     break;
                                 }
                                 case BottomTabName.BOTTOM_TAB_NAME_SYSTEM: {
-                                    iconName = 'help'
-                                    iconColor = focused ? '#4984F3' : '#999999'
-                                    break;
-                                }
-                                case BottomTabName.BOTTOM_TAB_NAME_MINE: {
                                     iconName = 'book'
                                     iconColor = focused ? '#4984F3' : '#999999'
                                     break;
                                 }
-                                case BottomTabName.BOTTOM_TAB_NAME_ASK: {
+                                case BottomTabName.BOTTOM_TAB_NAME_MINE: {
                                     iconName = 'person'
+                                    iconColor = focused ? '#4984F3' : '#999999'
+                                    break;
+                                }
+                                case BottomTabName.BOTTOM_TAB_NAME_ASK: {
+                                    iconName = 'help'
                                     iconColor = focused ? '#4984F3' : '#999999'
                                     break;
                                 }
@@ -75,8 +76,6 @@ function App() {
                 </NavigationContainer>
             </View>
         </Provider>
-
-
     );
 }
 
