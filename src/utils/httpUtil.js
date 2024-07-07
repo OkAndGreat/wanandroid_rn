@@ -1,20 +1,20 @@
-import axios from 'axios';
 import qs from 'querystring';
+import _axios from "./setAxios";
 
 export default class httpUtil {
     static get(url, params) {
         return new Promise(async (resolve, reject) => {
             try {
-                let query = await qs.stringify(params);
+                let query = qs.stringify(params);
                 let res = null;
                 if (!params) {
-                    res = await axios.get(url);
+                    res = await _axios.get(url);
                 } else {
-                    res = await axios.get(url + '?' + query);
+                    res = await _axios.get(url + '?' + query);
                 }
                 resolve(res);
             } catch (error) {
-                const errorMsg = `请求报错路径: ${url} \n请求报错信息: ${error}`;
+                const errorMsg = `请求报错路径: ${url} \n 请求报错信息: ${error}`;
                 console.log(errorMsg);
                 reject(error);
             }
@@ -24,7 +24,7 @@ export default class httpUtil {
     static post(url, params) {
         return new Promise(async (resolve, reject) => {
             try {
-                let res = await axios.post(url, params);
+                let res = await _axios.post(url, params);
                 resolve(res);
             } catch (error) {
                 const errorMsg = `请求报错路径: ${url} \n请求报错信息: ${error}`;

@@ -18,9 +18,6 @@ import Toast from "./src/components/Toast";
 const Tab = createBottomTabNavigator();
 
 function App() {
-    useEffect(() => {
-        setAxios()
-    }, []);
 
     return (
         <Provider store={store}>
