@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import CommonHeader from "../../components/CommonHeader";
 import {fetchHomeList} from "../../actions";
+import {HomeList} from "./component/HomeList";
 
 class HomeScreen extends PureComponent {
     constructor() {
@@ -15,10 +16,12 @@ class HomeScreen extends PureComponent {
     }
 
     render() {
+        const {dataSource} = this.props;
+
         return (
             <View style={styles.container}>
                 <CommonHeader headerTitle="首页" leftIconName={"scan"} rightIconName={"search"}></CommonHeader>
-                <Text style={styles.text}>Hello World!</Text>
+                <HomeList dataList={dataSource}></HomeList>
             </View>
         );
     }
@@ -36,8 +39,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-        page: state.page,
-        dataSource: state.dataSource
+        page: state.home.page,
+        dataSource: state.home.dataSource
     }
 }
 
