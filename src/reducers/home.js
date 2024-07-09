@@ -3,6 +3,7 @@ import {ActionType} from "../utils/Constant";
 const initialState = {
     initPage: 1,
     dataSource: [], // 列表数据源
+    homeBanner: [], // 首页轮播数据
 }
 
 const home = (state = initialState, action) => {
@@ -13,6 +14,13 @@ const home = (state = initialState, action) => {
                 dataSource: action.params.datas
             }
         case ActionType.FETCH_HOME_LIST_FAILURE:
+            return state
+        case ActionType.FETCH_HOME_BANNER:
+            return {
+                ...state,
+                homeBanner: action.params
+            };
+        case ActionType.FETCH_HOME_BANNER_FAILURE:
             return state
         default:
             return state;

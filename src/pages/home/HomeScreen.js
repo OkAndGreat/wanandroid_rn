@@ -3,8 +3,9 @@ import {StyleSheet, Text, View} from "react-native";
 import {connect} from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import CommonHeader from "../../components/CommonHeader";
-import {fetchHomeList} from "../../actions";
+import {fetchHomeBanner, fetchHomeList} from "../../actions";
 import {HomeList} from "./component/HomeList";
+import Banner from "../../components/Banner";
 
 class HomeScreen extends PureComponent {
     constructor() {
@@ -13,15 +14,17 @@ class HomeScreen extends PureComponent {
 
     componentDidMount() {
         fetchHomeList()
+        fetchHomeBanner()
     }
 
     render() {
-        const {dataSource, navigation} = this.props;
+        const {dataSource, navigation, homeBanner} = this.props;
 
 
         return (
             <View style={styles.container}>
                 <CommonHeader headerTitle="首页" leftIconName={"scan"} rightIconName={"search"}></CommonHeader>
+                <Banner bannerArr={homeBanner} navigation={navigation}/>
                 <HomeList dataList={dataSource} navigation={navigation}></HomeList>
             </View>
         );
@@ -41,7 +44,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
     return {
         page: state.home.page,
-        dataSource: state.home.dataSource
+        dataSource: state.home.dataSource,
+        homeBanner: state.home.homeBanner,
     }
 }
 
