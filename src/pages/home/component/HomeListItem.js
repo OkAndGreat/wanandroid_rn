@@ -1,5 +1,5 @@
 import {PureComponent} from "react";
-import {View, StyleSheet, Text} from "react-native";
+import {View, StyleSheet, Text, Touchable, TouchableOpacity} from "react-native";
 
 export class HomeListItem extends PureComponent {
 
@@ -8,30 +8,33 @@ export class HomeListItem extends PureComponent {
     }
 
     render() {
-        const {data} = this.props
+        const {data, navigation, onItemClicked} = this.props
 
         const authorStyle = [
             styles.author,
             data.niceShareDate.includes("前") ? {marginStart: 5} : null,
         ].filter(style => style)
 
-        return <View style={styles.container}>
+
+        return <TouchableOpacity style={styles.container} onPress={() => {
+            onItemClicked(data.link)
+        }}>
             <View style={styles.topContainer}>
                 <View style={styles.topContainerLeft}>
                     {data.niceShareDate.includes("前") ? (
-                        <Text>新</Text>
+                        <Text style={styles.newTag}>新</Text>
                     ) : null}
                     <Text style={authorStyle}>{data.author ? data.author : data.shareUser}</Text>
                 </View>
-                <Text>{data.niceShareDate}</Text>
+                <Text style={styles.niceShareDate}>{data.niceShareDate}</Text>
             </View>
             <View style={styles.centerContainer}>
-                <Text>{data.title}</Text>
+                <Text style={styles.title}  numberOfLines={2} ellipsizeMode='tail'>{data.title}</Text>
             </View>
             <View style={styles.bottomContainer}>
                 <Text style={styles.chapter}>{data.superChapterName + "·" + data.chapterName}</Text>
             </View>
-        </View>;
+        </TouchableOpacity>;
     }
 }
 
@@ -41,18 +44,32 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         marginStart: 12,
         marginEnd: 12,
-        marginBottom:20
+        marginBottom: 20
     },
     topContainerLeft: {
-        flexDirection: "row",
+        flexDirection: "row"
     },
     topContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
+        marginBottom: 5
     },
-    centerContainer: {},
+    centerContainer: {
+        marginBottom: 5
+    },
     bottomContainer: {flexDirection: "row"},
-    author: {},
-    niceShareDate: {},
-    chapter: {}
+    newTag: {
+        color: '#5186E7'
+    },
+    author: {
+        color: '#80807E'
+    },
+    niceShareDate: {color: '#a5a5a3'},
+    title: {
+        color: '#353535',
+        fontSize: 17
+    },
+    chapter: {
+        color: '#a5a5a3'
+    }
 })

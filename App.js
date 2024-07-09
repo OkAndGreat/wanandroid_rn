@@ -13,9 +13,13 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import {StatusBar, View} from "react-native";
 import "./src/components/RootView"
 import Toast from "./src/components/Toast";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import WebviewScreen from "./src/pages/webview/WebviewScreen";
+import BottomTabNavigator from "@react-navigation/bottom-tabs/src/navigators/createBottomTabNavigator";
+import BottomTabNavigation from "./src/navigation/BottomTabNavigation";
 
 
-const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 function App() {
 
@@ -23,53 +27,15 @@ function App() {
         <Provider store={store}>
             <View style={{flex: 1}}>
                 <NavigationContainer>
-                    <Tab.Navigator screenOptions={({route}) => ({
-                        tabBarIcon: ({focused, color, size}) => {
-                            let iconName;
-                            let iconColor;
+                    <Stack.Navigator screenOptions={
+                        {
+                            headerShown: false
+                        }
+                    }>
+                        <Stack.Screen name="BottomNavigation" component={BottomTabNavigation}/>
+                        <Stack.Screen name="WebviewScreen" component={WebviewScreen}/>
+                    </Stack.Navigator>
 
-                            switch (route.name) {
-                                case  BottomTabName.BOTTOM_TAB_NAME_HOME: {
-                                    iconName = 'home'
-                                    iconColor = focused ? '#4984F3' : '#999999'
-                                    break;
-                                }
-                                case BottomTabName.BOTTOM_TAB_NAME_SYSTEM: {
-                                    iconName = 'book'
-                                    iconColor = focused ? '#4984F3' : '#999999'
-                                    break;
-                                }
-                                case BottomTabName.BOTTOM_TAB_NAME_MINE: {
-                                    iconName = 'person'
-                                    iconColor = focused ? '#4984F3' : '#999999'
-                                    break;
-                                }
-                                case BottomTabName.BOTTOM_TAB_NAME_ASK: {
-                                    iconName = 'help'
-                                    iconColor = focused ? '#4984F3' : '#999999'
-                                    break;
-                                }
-                            }
-
-
-                            return <Ionicons name={iconName} size={20} color={iconColor}/>;
-                        },
-                        tabBarActiveTintColor: '#4984F3',
-                        tabBarInactiveTintColor: '#999999',
-                        tabBarStyle: {
-                            paddingBottom: 15,
-                            height: 60,
-                        },
-                        tabBarLabelStyle: {
-                            fontSize: 12
-                        },
-                        headerShown: false
-                    })}>
-                        <Tab.Screen name={BottomTabName.BOTTOM_TAB_NAME_HOME} component={HomeScreen}/>
-                        <Tab.Screen name={BottomTabName.BOTTOM_TAB_NAME_ASK} component={AskScreen}/>
-                        <Tab.Screen name={BottomTabName.BOTTOM_TAB_NAME_SYSTEM} component={SystemScreen}/>
-                        <Tab.Screen name={BottomTabName.BOTTOM_TAB_NAME_MINE} component={MineScreen}/>
-                    </Tab.Navigator>
                 </NavigationContainer>
             </View>
         </Provider>

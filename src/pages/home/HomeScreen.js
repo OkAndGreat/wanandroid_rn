@@ -16,12 +16,13 @@ class HomeScreen extends PureComponent {
     }
 
     render() {
-        const {dataSource} = this.props;
+        const {dataSource, navigation} = this.props;
+
 
         return (
             <View style={styles.container}>
                 <CommonHeader headerTitle="首页" leftIconName={"scan"} rightIconName={"search"}></CommonHeader>
-                <HomeList dataList={dataSource}></HomeList>
+                <HomeList dataList={dataSource} navigation={navigation}></HomeList>
             </View>
         );
     }
