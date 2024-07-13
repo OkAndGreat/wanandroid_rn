@@ -23,6 +23,7 @@ export class HomeList extends PureComponent {
         return (
             <View style={styles.container}>
                 <FlatList
+                    showsVerticalScrollIndicator={false}
                     data={dataList}
                     renderItem={({item, index}) => this.renderItem({item, index, navigation: this.props.navigation})}
                     keyExtractor={(item, index) => index.toString()}
@@ -35,5 +36,6 @@ export class HomeList extends PureComponent {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        marginTop: 10
     }
 })

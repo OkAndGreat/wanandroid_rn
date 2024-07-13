@@ -1,8 +1,12 @@
 import React, {PureComponent} from "react";
 import {StyleSheet, Text, View} from "react-native";
 import {connect} from "react-redux";
+import {StatusBarComp} from "../../components/CommonHeader";
+import Color from "../../utils/Color";
 
 class MineScreen extends PureComponent {
+
+
     constructor() {
         super();
     }
@@ -10,28 +14,30 @@ class MineScreen extends PureComponent {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.text}>Hello World!</Text>
+                <View style={styles.profileInfo}></View>
             </View>
         );
     }
-
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1, // 让容器占满整个屏幕
-        justifyContent: 'center', // 垂直居中
+        flexDirection: 'column',
+        justifyContent: 'flex-start', // 垂直居中
         alignItems: 'center', // 水平居中
         backgroundColor: '#F5FCFF', // 背景颜色
     },
-    text: {}
+    profileInfo: {
+        backgroundColor: Color.THEME,
+        height: 300,
+        width: '100%'
+    }
 });
 
 
 const mapStateToProps = state => {
-    return {
-
-    }
+    return {}
 }
 
 export default connect(mapStateToProps)(MineScreen);

@@ -43,8 +43,7 @@ class WebViewScreen extends PureComponent {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: "column",
-        paddingTop: 10
+        flexDirection: "column"
     }
 })
 

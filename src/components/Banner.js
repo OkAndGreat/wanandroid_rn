@@ -53,8 +53,7 @@ const styles = StyleSheet.create({
         height: imageHeight
     },
     bannerContainer: {
-        height: imageHeight,
-        marginBottom: 20
+        height: imageHeight
     },
     imgCarousel: {
         height: imageHeight,

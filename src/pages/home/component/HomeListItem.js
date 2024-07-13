@@ -18,7 +18,8 @@ export class HomeListItem extends PureComponent {
 
         return <TouchableOpacity style={styles.container} onPress={() => {
             onItemClicked(data.link)
-        }}>
+        }} activeOpacity={1}
+        >
             <View style={styles.topContainer}>
                 <View style={styles.topContainerLeft}>
                     {data.niceShareDate.includes("前") ? (
@@ -29,7 +30,7 @@ export class HomeListItem extends PureComponent {
                 <Text style={styles.niceShareDate}>{data.niceShareDate}</Text>
             </View>
             <View style={styles.centerContainer}>
-                <Text style={styles.title}  numberOfLines={2} ellipsizeMode='tail'>{data.title}</Text>
+                <Text style={styles.title} numberOfLines={2} ellipsizeMode='tail'>{data.title}</Text>
             </View>
             <View style={styles.bottomContainer}>
                 <Text style={styles.chapter}>{data.superChapterName + "·" + data.chapterName}</Text>
