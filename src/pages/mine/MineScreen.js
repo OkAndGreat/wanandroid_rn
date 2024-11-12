@@ -3,6 +3,7 @@ import {StyleSheet, Text, View} from "react-native";
 import {connect} from "react-redux";
 import {StatusBarComp} from "../../components/CommonHeader";
 import Color from "../../utils/Color";
+import MineSingleItem from "./component/MineSingleItem";
 
 class MineScreen extends PureComponent {
 
@@ -15,6 +16,7 @@ class MineScreen extends PureComponent {
         return (
             <View style={styles.container}>
                 <View style={styles.profileInfo}></View>
+                <MineSingleItem name={123}></MineSingleItem>
             </View>
         );
     }

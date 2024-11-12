@@ -1,6 +1,7 @@
 import React from "react";
-import {StyleSheet} from "react-native";
+import {StyleSheet, View} from "react-native";
 import {Text} from 'react-native'
+import {Image} from 'react-native';
 
 interface Props {
     name: string;
@@ -9,17 +10,21 @@ interface Props {
 const MineSingleItem: React.FC<Props> = (props) => {
 
     return (
-        <div style={styles.container}>
-            <div style={styles.mainContent}>
-                <div style={styles.mainText}>{props.name}</div>
-            </div>
+        <View style={styles.container}>
+            <View style={styles.leftContent}>
+                {/*<Image source={require('./assets/like.png')} style={{width: 20, height: 20}}/>*/}
+                <Text style={styles.leftText}>{'123'}</Text>
+            </View>
 
-            <div style={styles.goIcon}>
-                {">"}
-            </div>
-        </div>
+            <View style={styles.rightContent}></View>
+            <View style={styles.goIcon}>
+            </View>
+        </View>
     )
 }
+
+export default MineSingleItem;
+
 
 const styles = StyleSheet.create({
     container: {
@@ -28,7 +33,8 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 46,
     },
-    mainContent: {},
-    mainText: {},
+    rightContent: {},
+    leftContent: {},
+    leftText: {},
     goIcon: {}
 });
