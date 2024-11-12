@@ -5,8 +5,8 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import HomeScreen from "../pages/home/HomeScreen";
 import AskScreen from "../pages/ask/AskScreen";
 import SystemScreen from "../pages/system/SystemScreen";
-import MineScreen from "../pages/mine/MineScreen";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import MineScreen from "../pages/mine/MineScreen";
 
 
 const Tab = createBottomTabNavigator();

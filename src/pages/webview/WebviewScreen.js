@@ -1,20 +1,16 @@
-import React, {PureComponent} from 'react';
+import React, {PureComponent, useState} from 'react';
 import {Share, StyleSheet, View} from 'react-native';
 import WebView from 'react-native-webview';
+import {useSafeAreaInsets} from "react-native-safe-area-context";
 
 /**
  * WebViewScreen
  */
-class WebViewScreen extends PureComponent {
-    constructor(props) {
-        super(props);
-        this.state = {
-            progress: 0,
-        };
-        this.onShare = this.onShare.bind(this);
-    }
+const WebViewScreen = ({navigation, route}) => {
+    const [progress, setProgress] = useState(0);
+    const insets = useSafeAreaInsets();
 
-    async onShare(title, url) {
+    const onShare = async (title, url) => {
         try {
             await Share.share({
                 message: `${title}：${url}`,
@@ -22,29 +18,29 @@ class WebViewScreen extends PureComponent {
         } catch (error) {
             alert(error.message);
         }
-    }
+    };
 
-    render() {
-        const {navigation, route} = this.props;
-        const {url} = route.params
-        return (
-            <View style={styles.container}>
-                <WebView
-                    source={{uri: url}}
-                    onError={(error) => {
-                        console.log('WebView error:', error);
-                    }}
-                />
+    const {url} = route.params;
+    return (
+        <View style={styles.container}>
+            <View style={{ height: insets.top}}>
             </View>
-        );
-    }
-}
+            <WebView
+                source={{uri: url}}
+                onError={(error) => {
+                    console.log('WebView error:', error);
+                }}
+            />
+        </View>
+    );
+};
+
+export default WebViewScreen;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: "column"
-    }
+    },
 })
 
-export default WebViewScreen;
