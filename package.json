@@ -6,6 +6,9 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
+    "@babel/plugin-transform-private-methods": "^7.25.9",
+    "@babel/plugin-transform-private-property-in-object": "^7.25.9",
+    "@craco/craco": "^7.1.0",
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native/babel-preset": "^0.76.1",
     "@react-native/metro-config": "^0.74.83",
@@ -16,6 +19,7 @@
     "axios": "^1.7.2",
     "deprecated-react-native-prop-types": "^5.0.0",
     "lodash": "^4.17.21",
+    "metro-react-native-babel-preset": "^0.77.0",
     "prop-types": "^15.8.1",
     "querystring": "^0.2.1",
     "react": "18.2.0",
@@ -36,8 +40,10 @@
   },
   "packageManager": "yarn@3.6.4",
   "devDependencies": {
+    "@babel/plugin-transform-class-properties": "^7.25.9",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
+    "babel-plugin-module-resolver": "^5.0.2",
     "metro-config": "^0.80.9",
     "typescript": "^5.6.3"
   }

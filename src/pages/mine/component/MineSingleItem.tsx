@@ -12,7 +12,7 @@ const MineSingleItem: React.FC<Props> = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.leftContent}>
-                {/*<Image source={require('./assets/like.png')} style={{width: 20, height: 20}}/>*/}
+                <Image source={require('assets/like.png')} style={{width: 20, height: 20}}/>
                 <Text style={styles.leftText}>{'123'}</Text>
             </View>
 
