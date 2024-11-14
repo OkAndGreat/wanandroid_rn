@@ -17,6 +17,7 @@ class MineScreen extends PureComponent {
             <View style={styles.container}>
                 <View style={styles.profileInfo}></View>
                 <MineSingleItem name={123}></MineSingleItem>
+                <MineSingleItem name={123}></MineSingleItem>
             </View>
         );
     }
