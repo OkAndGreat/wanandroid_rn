@@ -2,6 +2,10 @@
 #
 .DS_Store
 
+android/gradle.properties
+android/gradlew
+android/gradle/wrapper/gradle-wrapper.properties
+
 # Xcode
 #
 build/
@@ -24,7 +28,6 @@ DerivedData
 
 # Android/IntelliJ
 #
-build/
 .idea
 .gradle
 local.properties
