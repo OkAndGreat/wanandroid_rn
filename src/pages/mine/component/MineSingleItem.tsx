@@ -2,27 +2,29 @@ import React from "react";
 import {StyleSheet, View} from "react-native";
 import {Text} from 'react-native'
 import {Image} from 'react-native';
-import {Colors} from "react-native/Libraries/NewAppScreen";
+import {ColorValue} from "react-native/Libraries/StyleSheet/StyleSheet";
+import {ImageSourcePropType} from "react-native/Libraries/Image/Image";
+import {AppDefaultColor} from "utils/AppDefaultColor";
 
-interface Props {
+export interface MineItemData {
     name: string;
-    imgName?: string,
+    imgName: ImageSourcePropType | undefined,
     extraText?: string,
-    extraColor: string | number
+    extraTextColor?: ColorValue
 }
 
-const MineSingleItem: React.FC<Props> = (props) => {
+const MineSingleItem: React.FC<MineItemData> = (props) => {
 
     return (
         <View style={styles.container}>
             <View style={styles.leftContent}>
-                <Image source={require('assets/like.png')} style={{width: 25, height: 25, tintColor: 'blue'}}/>
-                <Text style={styles.leftText}>{'123'}</Text>
+                <Image source={props.imgName} style={{width: 18, height: 18, tintColor: AppDefaultColor.THEME_COLOR}}/>
+                <Text style={styles.leftText}>{props.name}</Text>
             </View>
 
             <View style={styles.rightContent}>
-                <Text style={styles.extraGoInfo}>{'3305'}</Text>
-                <Text style={styles.goIcon}>{'>'}</Text>
+                <Text style={[styles.extraGoInfo, {color: props.extraTextColor}]}>{props.extraText}</Text>
+                <Image source={require('assets/mine_go.png')} style={{width: 15, height: 15}}/>
             </View>
 
         </View>
@@ -47,19 +49,17 @@ const styles = StyleSheet.create({
         flexDirection: "row",
     },
     leftContent: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems:'center',
     },
     leftText: {
         marginStart: 10,
+        marginBottom:3,
         color: 'black',
         fontSize: 16
     },
-    goIcon: {
-        color: 'gray',
-        fontSize: 20,
-    },
     extraGoInfo: {
-        marginRight:10,
+        marginRight: 10,
         fontSize: 16,
     }
 });
