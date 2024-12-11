@@ -20,7 +20,10 @@ const StatusBarComp = (props) => {
 
 const CommonHeader = ({
                           headerTitle,
+                          headerHeight = 40,
+                          headerTextSize = 20,
                           leftIconName = undefined,
+                          leftIconSize = 20,
                           onLeftIconPress = () => {
 
                           },
@@ -32,12 +35,17 @@ const CommonHeader = ({
         <View style={[styles.container]}>
             <StatusBarComp/>
             {/* Header主体 */}
-            <View style={[styles.headerContainer]}>
-                {leftIconName ? <Ionicons style={[styles.leftIcon]} name={leftIconName} size={20} color={Color.WHITE}
-                                          onPress={onLeftIconPress}></Ionicons> : null}
-                <Text style={[styles.headerText]}>{headerTitle}</Text>
-                {rightIconName ? <Ionicons style={[styles.rightIcon]} name={rightIconName} size={20} color={Color.WHITE}
-                                           onPress={onRightIconPress}></Ionicons> : null}
+            <View style={[styles.headerContainer, {height: headerHeight}]}>
+                <View style={[styles.leftIcon]}>
+                    {leftIconName ? <Ionicons name={leftIconName} size={leftIconSize} color={Color.WHITE}
+                                              onPress={onLeftIconPress}></Ionicons> : null}
+                </View>
+                <Text style={[styles.headerText, {fontSize: headerTextSize}]}>{headerTitle}</Text>
+                <View style={[styles.rightIcon]}>
+                    {rightIconName ? <Ionicons name={rightIconName} size={20} color={Color.WHITE}
+                                               onPress={onRightIconPress}></Ionicons> : null}
+                </View>
+
             </View>
         </View>
     );
@@ -50,21 +58,27 @@ const styles = StyleSheet.create({
     headerContainer: {
         backgroundColor: Color.THEME,
         flexDirection: 'row',
-        alignItems: 'center', // 交叉轴居中
-        height: 50,
+        alignItems: 'center',
         width: '100%'
     },
     headerText: {
         marginLeft: 'auto', // 水平自动边距
         marginRight: 'auto', // 水平自动边距
-        alignSelf: 'center', // 垂直居中
-        color: Color.WHITE,
-        fontSize: 18
+        marginBottom: 5,
+        color: Color.WHITE
     },
     leftIcon: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        width: 100,
         marginStart: 20
     },
     rightIcon: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        width: 100,
         marginEnd: 20
     }
 })

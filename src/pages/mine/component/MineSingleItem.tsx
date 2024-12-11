@@ -1,5 +1,5 @@
 import React from "react";
-import {StyleSheet, View} from "react-native";
+import {StyleSheet, TouchableOpacity, View} from "react-native";
 import {Text} from 'react-native'
 import {Image} from 'react-native';
 import {ColorValue} from "react-native/Libraries/StyleSheet/StyleSheet";
@@ -9,14 +9,20 @@ import {AppDefaultColor} from "utils/AppDefaultColor";
 export interface MineItemData {
     name: string;
     imgName: ImageSourcePropType | undefined,
+    routes: string,
     extraText?: string,
     extraTextColor?: ColorValue
+    onItemClicked?: (routes: string) => void
 }
 
 const MineSingleItem: React.FC<MineItemData> = (props) => {
 
     return (
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.container} activeOpacity={1} onPress={() => {
+            if (props.onItemClicked) {
+                props.onItemClicked(props.routes);
+            }
+        }}>
             <View style={styles.leftContent}>
                 <Image source={props.imgName} style={{width: 18, height: 18, tintColor: AppDefaultColor.THEME_COLOR}}/>
                 <Text style={styles.leftText}>{props.name}</Text>
@@ -27,7 +33,7 @@ const MineSingleItem: React.FC<MineItemData> = (props) => {
                 <Image source={require('assets/mine_go.png')} style={{width: 15, height: 15}}/>
             </View>
 
-        </View>
+        </TouchableOpacity>
     )
 }
 
@@ -50,16 +56,16 @@ const styles = StyleSheet.create({
     },
     leftContent: {
         flexDirection: 'row',
-        alignItems:'center',
+        alignItems: 'center',
     },
     leftText: {
         marginStart: 10,
-        marginBottom:3,
+        marginBottom: 3,
         color: 'black',
         fontSize: 16
     },
     extraGoInfo: {
         marginRight: 10,
-        fontSize: 16,
+        fontSize: 13,
     }
 });

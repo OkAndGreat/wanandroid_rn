@@ -1,14 +1,11 @@
 import React, {PureComponent} from "react";
 import {StyleSheet, Text, View} from "react-native";
 import {connect} from "react-redux";
-import {StatusBarComp} from "../../components/CommonHeader";
 import Color from "../../utils/Color";
 import MineSingleItem from "./component/MineSingleItem";
 import {MineItemData} from "./component/MineSingleItem";
 
 class MineScreen extends PureComponent {
-
-    mineDataList: Array<MineItemData> = []
 
     constructor() {
         super();
@@ -16,33 +13,50 @@ class MineScreen extends PureComponent {
     }
 
     initMineDataList() {
-        this.mineDataList = [
-            {name: '我的积分', imgName: require('../../assets/mine_credit.png')},
-            {name: '我的分享', imgName: require('../../assets/mine_share.png')},
-            {name: '我的收藏', imgName: require('../../assets/mine_collect.png')},
-            {name: '阅读历史', imgName: require('../../assets/mine_read_history.png')},
-            {name: '开源项目', imgName: require('../../assets/mine_github.png')},
-            {name: '关于作者', imgName: require('../../assets/mine_about_author.png')},
-            {name: '系统设置', imgName: require('../../assets/mine_setting.png')}
-        ];
+        this.mineDataList = [{
+            name: '我的积分',
+            imgName: require('../../assets/mine_credit.png'),
+            routes: 'SystemSettingsPage',
+            extraText: '3463'
+        }, {
+            name: '我的分享', imgName: require('../../assets/mine_share.png'), routes: 'SystemSettingsPage'
+        }, {
+            name: '我的收藏', imgName: require('../../assets/mine_collect.png'), routes: 'SystemSettingsPage'
+        }, {
+            name: '阅读历史', imgName: require('../../assets/mine_read_history.png'), routes: 'SystemSettingsPage'
+        }, {
+            name: '开源项目', imgName: require('../../assets/mine_github.png'), routes: 'SystemSettingsPage'
+        }, {
+            name: '关于作者',
+            imgName: require('../../assets/mine_about_author.png'),
+            routes: 'SystemSettingsPage',
+            extraText: '请他喝杯咖啡~'
+        }, {
+            name: '系统设置', imgName: require('../../assets/mine_setting.png'), routes: 'SystemSettingsPage'
+        }];
     }
 
     render() {
-        return (
 
+        const {navigation} = this.props;
+
+        return (
             <View style={styles.container}>
-                <View style={styles.profileInfo}></View>
-                {this.mineDataList.map((item) => (
-                    <MineSingleItem
-                        key={item.extraText}
-                        extraText={item.extraText}
-                        imgName={item.imgName}
-                        extraTextColor={item.extraTextColor}
-                        name={item.name}
-                    />
-                ))}
-            </View>
-        );
+                <View style={styles.profileInfo}>
+
+                </View>
+                {this.mineDataList.map((item) => (<MineSingleItem
+                    key={item.name}
+                    routes={item.routes}
+                    extraText={item.extraText}
+                    imgName={item.imgName}
+                    extraTextColor={item.extraTextColor}
+                    name={item.name}
+                    onItemClicked={(routes) => {
+                        navigation.navigate(routes)
+                    }}
+                />))}
+            </View>);
     }
 }
 

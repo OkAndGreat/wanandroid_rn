@@ -7,6 +7,11 @@ const {
     resolver: { sourceExts, assetExts },
 } = getDefaultConfig(__dirname);
 
+// metro.config.js
+const {
+    wrapWithReanimatedMetroConfig,
+} = require('react-native-reanimated/metro-config');
+
 const config = {
     transformer: {
         getTransformOptions: async () => ({
@@ -23,4 +28,4 @@ const config = {
     },
 };
 
-module.exports = mergeConfig(defaultConfig, config);
+module.exports = wrapWithReanimatedMetroConfig(mergeConfig(defaultConfig, config));
