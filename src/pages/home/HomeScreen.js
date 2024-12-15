@@ -3,9 +3,9 @@ import {StyleSheet, Text, View} from "react-native";
 import {connect} from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import CommonHeader from "../../components/CommonHeader";
-import {fetchHomeBanner, fetchHomeList} from "../../actions";
 import {HomeList} from "./component/HomeList";
 import Banner from "../../components/Banner";
+import {fetchHomeBanner, fetchHomeList} from "actions/HomeActions";
 
 class HomeScreen extends PureComponent {
     constructor() {
