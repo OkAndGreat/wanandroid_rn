@@ -15,10 +15,6 @@ export interface SettingItemProps {
     onSwitchClicked?: (val: boolean) => void
 }
 
-export class SettingItemPropsModel {
-
-}
-
 export const SettingItem = (props: SettingItemProps) => {
     return (
         <TouchableOpacity style={styles.container}
@@ -42,7 +38,10 @@ export const SettingItem = (props: SettingItemProps) => {
 
             {props.type == SettingItemType.TYPE_SWITCH &&
                 <View>
-                    <Switch onChange={props.onSwitchClicked} style={[{height: 20, width: 40}]}/>
+                    <Switch onChange={props.onSwitchClicked}
+                            checked={props.switchCheckStatus}
+                            defaultChecked={false}
+                            style={[{height: 20, width: 40}]}/>
                 </View>
             }
 
