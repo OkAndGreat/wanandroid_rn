@@ -5,38 +5,44 @@ import {mmkv} from "utils/Constant";
 import {AppDefaultColor} from "utils/AppDefaultColor";
 
 export interface SettingItemProps {
-    data: SettingItemPropsModel
+    mainText: string;
+    mainTextTips?: string
+    type: SettingItemType
+    switchCheckStatus?: boolean
+    routeUrl?: string
+    extraText?: string
     onSettingItemPressed?: (url: string) => void;
+    onSwitchClicked?: (val: boolean) => void
 }
 
 export class SettingItemPropsModel {
-    mainText: string;
-    type: SettingItemType
-    routeUrl?: string
-    extraText?: string
+
 }
 
 export const SettingItem = (props: SettingItemProps) => {
     return (
-        <TouchableOpacity style={styles.container} activeOpacity={1} onPress={() => {
+        <TouchableOpacity style={styles.container}
+                          activeOpacity={props.type == SettingItemType.TYPE_SWITCH ? 1 : 0.5} onPress={() => {
             if (props.onSettingItemPressed) {
-                props.onSettingItemPressed(props.data.routeUrl)
+                props.onSettingItemPressed(props.routeUrl)
             }
         }}>
             <View style={styles.leftContent}>
-                <Text style={styles.mainText}>{props.data.mainText}</Text>
+                <Text
+                    style={[styles.mainText, props.type == SettingItemType.TYPE_ROUTE ? {marginTop: 8} : {}]}>{props.mainText}</Text>
+                {props.mainTextTips && <Text style={styles.mainTextTips}>{props.mainTextTips}</Text>}
             </View>
 
 
-            {props.data.type == SettingItemType.TYPE_ROUTE &&
-                <View>
-                    <Text style={[styles.extraGoInfo]}>{props.data.extraText}</Text>
+            {props.type == SettingItemType.TYPE_ROUTE &&
+                <View style={styles.rightContent}>
+                    <Text style={[styles.extraGoInfo]}>{props.extraText}</Text>
                     <Image source={require('assets/mine_go.png')} style={{width: 15, height: 15}}/>
                 </View>}
 
-            {props.data.type == SettingItemType.TYPE_SWITCH &&
+            {props.type == SettingItemType.TYPE_SWITCH &&
                 <View>
-                    <Switch/>
+                    <Switch onChange={props.onSwitchClicked} style={[{height: 20, width: 40}]}/>
                 </View>
             }
 
@@ -51,19 +57,21 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-between",
         width: '100%',
-        height: 46,
-        paddingStart: 20,
-        paddingEnd: 20,
+        height: 52,
+        paddingStart: 25,
+        paddingEnd: 15,
     },
     leftContent: {
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: 'column',
     },
     mainText: {
-        marginStart: 10,
-        marginBottom: 3,
         color: 'black',
         fontSize: 16
+    },
+    mainTextTips: {
+        marginTop: 6,
+        color: 'grey',
+        fontSize: 10
     },
     rightContent: {
         alignItems: "center",
@@ -71,7 +79,7 @@ const styles = StyleSheet.create({
     },
     extraGoInfo: {
         marginRight: 10,
-        fontSize: 13,
+        fontSize: 12,
     }
 });
 
