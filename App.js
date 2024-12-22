@@ -17,6 +17,7 @@ import WebviewScreen from "./src/pages/webview/WebviewScreen";
 import BottomTabNavigator from "@react-navigation/bottom-tabs/src/navigators/createBottomTabNavigator";
 import BottomTabNavigation from "./src/navigation/BottomTabNavigation";
 import {SystemSettingsPage} from "./src/pages/mine/pages/setting/SystemSettingsPage";
+import NativeStackNavigator from "@react-navigation/native-stack/src/navigators/createNativeStackNavigator";
 
 
 

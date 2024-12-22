@@ -1,14 +1,16 @@
 import React, {useEffect, useState} from "react";
 import {MineItemData} from "pages/mine/component/MineSingleItem";
-import {Image, StyleSheet, Text, View} from "react-native";
+import {Image, StyleSheet, Text, TextStyle, View} from "react-native";
 import {AppDefaultColor} from "utils/AppDefaultColor";
 import {NavigationProp} from "@react-navigation/native";
 import CommonHeader from "components/CommonHeader";
 import {Descriptor} from "@react-navigation/core/src/types";
 import {SettingItem, SettingItemProps, SettingItemType} from "pages/mine/pages/setting/component/SettingItem";
-import {Toast} from "@ant-design/react-native";
+import {Modal, Toast} from "@ant-design/react-native";
 import {mmkv} from "utils/Constant";
 import {DARK_MODE_MMKV_KEY, LOOP_MODE_MMKV_KEY, TOP_MODE_MMKV_KEY} from "pages/mine/pages/setting/SettingsPageConstans";
+import Color from "utils/Color";
+import {Colors} from "react-native/Libraries/NewAppScreen";
 
 export const SystemSettingsPage: (navigationDes: Descriptor<any, any, any>) => void = (navigationDes: Descriptor<any, any, any>) => {
     const navigation: NavigationProp<any> = navigationDes.navigation
@@ -58,10 +60,14 @@ export const SystemSettingsPage: (navigationDes: Descriptor<any, any, any>) => v
 
             <SettingItem
                 mainText={"清除缓存"}
+                onSettingItemPressed={() => {
+                    onClearCacheClicked()
+                }}
                 type={SettingItemType.TYPE_ROUTE}/>
 
             <SettingItem
                 mainText={"版本更新"}
+                extraText={"已经是最新版本"}
                 onSettingItemPressed={() => {
                     Toast.show("已经是最新版本~")
                 }}
@@ -69,10 +75,16 @@ export const SystemSettingsPage: (navigationDes: Descriptor<any, any, any>) => v
 
             <SettingItem
                 mainText={"关于我们"}
+                extraText={"当前版本2.2.5"}
                 type={SettingItemType.TYPE_ROUTE}/>
 
             <SettingItem
                 mainText={"隐私政策"}
+                onSettingItemPressed={() => {
+                    navigation.navigate("WebviewScreen", {
+                        url: "https://baidu.com"
+                    });
+                }}
                 type={SettingItemType.TYPE_ROUTE}/>
 
             <SettingItem
@@ -81,6 +93,22 @@ export const SystemSettingsPage: (navigationDes: Descriptor<any, any, any>) => v
 
         </View>
     )
+}
+
+function onClearCacheClicked() {
+    const negativeTextStyle: TextStyle = {
+        color: Color.TEXT_DARK
+    }
+
+    Modal.alert("确定要清除缓存吗？", "", [{
+        text: "取消",
+        style: negativeTextStyle
+    }, {
+        text: "确定",
+        onPress: () => {
+            Toast.show("已清除所有缓存")
+        }
+    }])
 }
 
 function onLeftIconPressed(navigation: any) {
