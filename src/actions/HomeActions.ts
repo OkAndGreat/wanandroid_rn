@@ -19,7 +19,6 @@ export function fetchHomeList(onFetchEnd?: () => void) {
 }
 
 export function loadMoreHomeList(page: number, onLoadMoreSuccess: (res) => void, onLoadMoreFailure: () => void) {
-    console.log("loadMoreHomeList" + page)
     getHomeList(page)
         .then(res => {
             onLoadMoreSuccess(res.data.datas)
