@@ -18,14 +18,13 @@ class HomeScreen extends PureComponent {
     }
 
     render() {
-        const {dataSource, navigation, homeBanner} = this.props;
-
+        const {dataSource, navigation, homeBanner, curPage} = this.props;
 
         return (
             <View style={styles.container}>
                 <CommonHeader headerTitle="首页" leftIconName={"scan"} rightIconName={"search"}></CommonHeader>
                 <Banner bannerArr={homeBanner} navigation={navigation}/>
-                <HomeList dataList={dataSource} navigation={navigation}></HomeList>
+                <HomeList dataList={dataSource} curPage={curPage} navigation={navigation}></HomeList>
             </View>
         );
     }
@@ -37,8 +36,7 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         alignItems: 'center', // 水平居中
         backgroundColor: '#F5FCFF', // 背景颜色
-    },
-    text: {}
+    }
 });
 
 const mapStateToProps = state => {
@@ -46,6 +44,7 @@ const mapStateToProps = state => {
         page: state.home.page,
         dataSource: state.home.dataSource,
         homeBanner: state.home.homeBanner,
+        curPage: state.home.curPage
     }
 }
 
