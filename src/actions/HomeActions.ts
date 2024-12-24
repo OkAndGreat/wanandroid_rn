@@ -1,12 +1,12 @@
 import {getHomeBanner, getHomeList} from "apis";
 import store from "store";
-import {ActionType} from "utils/Constant";
+import {ActionTypes} from "utils/Constant";
 import {createAction} from "actions/index";
 
 export function fetchHomeList(onFetchEnd?: () => void) {
     getHomeList()
         .then(res => {
-            store.dispatch(createAction(ActionType.FETCH_HOME_LIST, res.data))
+            store.dispatch(createAction(ActionTypes.FETCH_HOME_LIST, res.data))
         })
         .catch(e => {
 
@@ -22,7 +22,7 @@ export function loadMoreHomeList(page: number, onLoadMoreSuccess: (res) => void,
     getHomeList(page)
         .then(res => {
             onLoadMoreSuccess(res.data.datas)
-            store.dispatch(createAction(ActionType.LOAD_MORE_HOME_LIST, res.data))
+            store.dispatch(createAction(ActionTypes.LOAD_MORE_HOME_LIST, res.data))
         })
         .catch(e => {
             onLoadMoreFailure()
@@ -32,7 +32,7 @@ export function loadMoreHomeList(page: number, onLoadMoreSuccess: (res) => void,
 
 export function fetchHomeBanner() {
     getHomeBanner()
-        .then(res => store.dispatch(createAction(ActionType.FETCH_HOME_BANNER, res.data)))
+        .then(res => store.dispatch(createAction(ActionTypes.FETCH_HOME_BANNER, res.data)))
         .catch(e => {
 
         })

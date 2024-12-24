@@ -1,5 +1,5 @@
 import React, {PureComponent} from "react";
-import {StyleSheet, Text, View} from "react-native";
+import {Image, StyleSheet, Text, View} from "react-native";
 import {connect} from "react-redux";
 import Color from "../../utils/Color";
 import MineSingleItem from "./component/MineSingleItem";
@@ -30,7 +30,8 @@ class MineScreen extends PureComponent {
             name: '关于作者',
             imgName: require('../../assets/mine_about_author.png'),
             routes: 'SystemSettingsPage',
-            extraText: '请他喝杯咖啡~'
+            extraText: '请他喝杯咖啡~',
+            extraTextColor: '#E57343'
         }, {
             name: '系统设置', imgName: require('../../assets/mine_setting.png'), routes: 'SystemSettingsPage'
         }];
@@ -38,12 +39,21 @@ class MineScreen extends PureComponent {
 
     render() {
 
-        const {navigation} = this.props;
+        const {navigation, isLogin} = this.props;
 
         return (
             <View style={styles.container}>
                 <View style={styles.profileInfo}>
-
+                    <View style={styles.profileAvatar}>
+                        <Image source={require('../../assets/android.png')} style={{width: 36, height: 36}}/>
+                    </View>
+                    {
+                        isLogin ? <View>
+                            <Text style={[styles.profileText]}></Text>
+                        </View> : <View>
+                            <Text style={[styles.profileText]}>点击去登录</Text>
+                        </View>
+                    }
                 </View>
                 {this.mineDataList.map((item) => (<MineSingleItem
                     key={item.name}
@@ -66,14 +76,36 @@ const styles = StyleSheet.create({
         flexDirection: 'column', justifyContent: 'flex-start', // 垂直居中
         alignItems: 'center', // 水平居中
         backgroundColor: '#F5FCFF', // 背景颜色
-    }, profileInfo: {
-        backgroundColor: Color.THEME, height: 300, width: '100%'
+    },
+    profileInfo: {
+        backgroundColor: Color.THEME,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 300,
+        width: '100%'
+    },
+    profileText:{
+        color:Color.WHITE,
+        fontSize:16
+    },
+    profileAvatar: {
+        flexDirection: 'column',
+        marginBottom:10,
+        width: 70,
+        height: 70,
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#427BE3'
     }
 });
 
 
 const mapStateToProps = state => {
-    return {}
+    return {
+        isLogin: state.account.isLogin
+    }
 }
 
 export default connect(mapStateToProps)(MineScreen);

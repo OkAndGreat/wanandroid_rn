@@ -1,4 +1,4 @@
-import {ActionType} from "../utils/Constant";
+import {ActionTypes} from "utils/Constant";
 
 const initialState = {
     curPage: 0,
@@ -6,20 +6,20 @@ const initialState = {
     homeBanner: [], // 首页轮播数据
 }
 
-const home = (state = initialState, action) => {
+const HomeReducer = (state = initialState, action) => {
     switch (action.type) {
-        case ActionType.FETCH_HOME_LIST:
+        case ActionTypes.FETCH_HOME_LIST:
             return {
                 ...state,
                 curPage: 1,
                 dataSource: action.params.datas
             }
-        case ActionType.FETCH_HOME_BANNER:
+        case ActionTypes.FETCH_HOME_BANNER:
             return {
                 ...state,
                 homeBanner: action.params
             };
-        case ActionType.LOAD_MORE_HOME_LIST:
+        case ActionTypes.LOAD_MORE_HOME_LIST:
             return {
                 ...state,
                 curPage: state.curPage + 1,
@@ -30,4 +30,4 @@ const home = (state = initialState, action) => {
     }
 }
 
-export default home
+export default HomeReducer
