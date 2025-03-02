@@ -6,8 +6,6 @@ class ActionTypes {
     static FETCH_HOME_BANNER = 'FETCH_HOME_BANNER'
     static LOGIN = 'LOGIN'
     static UN_LOGIN = 'UN_LOGIN'
-
-
 }
 
 class BottomTabName {

@@ -1,9 +1,9 @@
 import React, {PureComponent} from "react";
-import {Image, StyleSheet, Text, View} from "react-native";
+import {Image, StyleSheet, Text,TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
 import {connect} from "react-redux";
 import Color from "../../utils/Color";
 import MineSingleItem from "./component/MineSingleItem";
-import {MineItemData} from "./component/MineSingleItem";
+import {TouchableOpacityWithoutFeedback} from "components/TouchableOpacityWithoutFeedback";
 
 class MineScreen extends PureComponent {
 
@@ -43,7 +43,9 @@ class MineScreen extends PureComponent {
 
         return (
             <View style={styles.container}>
-                <View style={styles.profileInfo}>
+                <TouchableOpacityWithoutFeedback style={styles.profileInfo} onPress={() => {
+                    navigation.navigate('LoginScreen');
+                }}>
                     <View style={styles.profileAvatar}>
                         <Image source={require('../../assets/android.png')} style={{width: 36, height: 36}}/>
                     </View>
@@ -54,7 +56,7 @@ class MineScreen extends PureComponent {
                             <Text style={[styles.profileText]}>点击去登录</Text>
                         </View>
                     }
-                </View>
+                </TouchableOpacityWithoutFeedback>
                 {this.mineDataList.map((item) => (<MineSingleItem
                     key={item.name}
                     routes={item.routes}

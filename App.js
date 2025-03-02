@@ -18,6 +18,7 @@ import BottomTabNavigator from "@react-navigation/bottom-tabs/src/navigators/cre
 import BottomTabNavigation from "./src/navigation/BottomTabNavigation";
 import {SystemSettingsPage} from "./src/pages/mine/pages/setting/SystemSettingsPage";
 import NativeStackNavigator from "@react-navigation/native-stack/src/navigators/createNativeStackNavigator";
+import {LoginScreen} from "pages/account/LoginScreen";
 
 
 
@@ -38,6 +39,7 @@ function App() {
                             <Stack.Screen name="BottomNavigation" component={BottomTabNavigation}/>
                             <Stack.Screen name="WebviewScreen" component={WebviewScreen}/>
                             <Stack.Screen name="SystemSettingsPage" component={SystemSettingsPage}/>
+                            <Stack.Screen name={"LoginScreen"} component={LoginScreen}/>
                         </Stack.Navigator>
 
                     </NavigationContainer>
