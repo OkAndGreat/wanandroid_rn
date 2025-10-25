@@ -7,8 +7,8 @@ import {Modal, Toast} from "@ant-design/react-native";
 import {DARK_MODE_MMKV_KEY, LOOP_MODE_MMKV_KEY, TOP_MODE_MMKV_KEY} from "./SettingsPageConstans";
 import {Colors} from "react-native/Libraries/NewAppScreen";
 import {mmkv} from "utils/Constant";
-import CommonHeader from "components/CommonHeader";
 import Color from "utils/Color";
+import CommonHeader from "shared/components/CommonHeader";
 
 export const SystemSettingsPage: (navigationDes: Descriptor<any, any, any>) => void = (navigationDes: Descriptor<any, any, any>) => {
     const navigation: NavigationProp<any> = navigationDes.navigation

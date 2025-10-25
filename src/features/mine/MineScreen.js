@@ -3,7 +3,7 @@ import {Image, StyleSheet, Text, View} from "react-native";
 import {connect} from "react-redux";
 import MineSingleItem from "./components/MineSingleItem";
 import Color from "../../utils/Color";
-import {TouchableOpacityWithoutFeedback} from "../../components/TouchableOpacityWithoutFeedback";
+import {TouchableOpacityWithoutFeedback} from "../../shared/components/TouchableOpacityWithoutFeedback";
 
 class MineScreen extends PureComponent {
 

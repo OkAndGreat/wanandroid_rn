@@ -1,6 +1,6 @@
 import {isAndroid} from "./screenUtil";
 import {ToastAndroid} from "react-native";
-import Toast from "../components/Toast";
+import Toast from "../shared/components/Toast";
 
 /**
  * 吐司方法

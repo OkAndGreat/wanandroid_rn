@@ -1,9 +1,9 @@
 import React, {useEffect, useCallback} from "react";
 import {StyleSheet, Text, View, RefreshControl} from "react-native";
 import {useSelector, useDispatch} from "react-redux";
-import CommonHeader from "../../components/CommonHeader";
+import CommonHeader from "../../shared/components/CommonHeader";
 import HomeList from "./components/HomeList";
-import Banner from "../../components/Banner";
+import Banner from "../../shared/components/Banner";
 import {fetchHomeList, loadMoreHomeList, fetchHomeBanner} from "./store/homeThunks";
 import {clearError} from "./store/homeSlice";
 

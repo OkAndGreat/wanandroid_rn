@@ -1,8 +1,8 @@
 import React, {useEffect, useRef, useState, useCallback} from "react";
 import {FlatList, View, StyleSheet, RefreshControl, Image,  TouchableOpacity} from "react-native";
 import HomeListItem from "./HomeListItem";
-import {RefreshState} from "../../../components/refresh_footer/RefreshState";
-import {RefreshFooter} from "../../../components/refresh_footer/RefreshFooter";
+import {RefreshState} from "../../../shared/components/refresh_footer/RefreshState";
+import {RefreshFooter} from "../../../shared/components/refresh_footer/RefreshFooter";
 
 const HomeList = ({dataList, refreshing, onRefresh, onLoadMore, error, onErrorDismiss, loadingMore, loading, navigation, curPage, hasMoreData}) => {
     const flatListRef = useRef(null);
