@@ -13,7 +13,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { Button, Provider as AntProvider, Toast } from '@ant-design/react-native';
 import {StatusBar, View} from "react-native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import WebviewScreen from "./src/pages/webview/WebviewScreen";
+import WebviewScreen from "./src/features/webview/WebviewScreen";
 import BottomTabNavigator from "@react-navigation/bottom-tabs/src/navigators/createBottomTabNavigator";
 import BottomTabNavigation from "./src/navigation/BottomTabNavigation";
 import {SystemSettingsPage} from "./src/features/mine/pages/setting/SystemSettingsPage";
