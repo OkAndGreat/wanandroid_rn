@@ -1,7 +1,7 @@
 import {PureComponent} from "react";
 import {View, StyleSheet, Text, Touchable, TouchableOpacity} from "react-native";
 
-export class HomeListItem extends PureComponent {
+class HomeListItem extends PureComponent {
 
     constructor() {
         super();
@@ -74,3 +74,5 @@ const styles = StyleSheet.create({
         color: '#a5a5a3'
     }
 })
+
+export default HomeListItem;

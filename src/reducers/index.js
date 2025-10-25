@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux';
-import HomeReducer from "./home";
-import {AccountReducer} from "reducers/account";
+import homeReducer from "./homeSlice";
+import accountReducer from "./accountSlice";
 
 export default combineReducers({
-    home: HomeReducer,
-    account: AccountReducer
+    home: homeReducer,
+    account: accountReducer
 })

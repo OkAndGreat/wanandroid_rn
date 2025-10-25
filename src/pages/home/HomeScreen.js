@@ -1,33 +1,63 @@
-import React, {PureComponent} from "react";
-import {StyleSheet, Text, View} from "react-native";
-import {connect} from "react-redux";
+import React, {useEffect, useCallback} from "react";
+import {StyleSheet, Text, View, RefreshControl} from "react-native";
+import {useSelector, useDispatch} from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import CommonHeader from "../../components/CommonHeader";
-import {HomeList} from "./component/HomeList";
+import HomeList from "./component/HomeList";
 import Banner from "../../components/Banner";
-import {fetchHomeBanner, fetchHomeList} from "actions/HomeActions";
+import {fetchHomeList, loadMoreHomeList, fetchHomeBanner} from "../../actions/homeThunks";
+import {clearError} from "../../reducers/homeSlice";
 
-class HomeScreen extends PureComponent {
-    constructor() {
-        super();
-    }
+const HomeScreen = ({navigation}) => {
+    const dispatch = useDispatch();
+    const {dataSource, homeBanner, curPage, loading, loadingMore, error, hasMoreData} = useSelector(state => state.home);
 
-    componentDidMount() {
-        fetchHomeList()
-        fetchHomeBanner()
-    }
+    // 初始化数据
+    useEffect(() => {
+        dispatch(fetchHomeList());
+        dispatch(fetchHomeBanner());
+    }, [dispatch]);
 
-    render() {
-        const {dataSource, navigation, homeBanner, curPage} = this.props;
+    // 下拉刷新
+    const handleRefresh = useCallback(() => {
+        dispatch(fetchHomeList());
+        dispatch(fetchHomeBanner());
+    }, [dispatch]);
 
-        return (
-            <View style={styles.container}>
-                <CommonHeader headerTitle="首页" leftIconName={"scan"} rightIconName={"search"}></CommonHeader>
-                <Banner bannerArr={homeBanner} navigation={navigation}/>
-                <HomeList dataList={dataSource} curPage={curPage} navigation={navigation}></HomeList>
-            </View>
-        );
-    }
+    // 加载更多
+    const handleLoadMore = useCallback(() => {
+        console.log("handleLoadMore called, curPage:", curPage, "loadingMore:", loadingMore);
+        if (!loadingMore) {
+            dispatch(loadMoreHomeList(curPage + 1));
+        }
+    }, [dispatch, curPage, loadingMore]);
+
+    // 清除错误
+    const handleErrorDismiss = useCallback(() => {
+        if (error) {
+            dispatch(clearError());
+        }
+    }, [dispatch, error]);
+
+    return (
+        <View style={styles.container}>
+            <CommonHeader headerTitle="首页" leftIconName={"scan"} rightIconName={"search"}></CommonHeader>
+            <Banner bannerArr={homeBanner} navigation={navigation}/>
+            <HomeList 
+                dataList={dataSource} 
+                curPage={curPage} 
+                navigation={navigation}
+                refreshing={loading}
+                loading={loading}
+                onRefresh={handleRefresh}
+                onLoadMore={handleLoadMore}
+                loadingMore={loadingMore}
+                error={error}
+                onErrorDismiss={handleErrorDismiss}
+                hasMoreData={hasMoreData}
+            />
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -39,13 +69,4 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapStateToProps = state => {
-    return {
-        page: state.home.page,
-        dataSource: state.home.dataSource,
-        homeBanner: state.home.homeBanner,
-        curPage: state.home.curPage
-    }
-}
-
-export default connect(mapStateToProps)(HomeScreen);
+export default HomeScreen;

@@ -1,24 +1,30 @@
-import React, {PureComponent, useRef} from "react";
+import React, {useEffect, useRef, useState, useCallback} from "react";
 import {FlatList, View, StyleSheet, RefreshControl, Text, Image, Touchable, TouchableOpacity} from "react-native";
-import {HomeListItem} from "./HomeListItem";
-import Color from "utils/Color";
-import {fetchHomeBanner, fetchHomeList, loadMoreHomeList} from "actions/HomeActions";
+import HomeListItem from "./HomeListItem";
 import {RefreshState} from "components/refresh_footer/RefreshState";
 import {RefreshFooter} from "components/refresh_footer/RefreshFooter";
 
-export class HomeList extends PureComponent {
+const HomeList = ({dataList, refreshing, onRefresh, onLoadMore, error, onErrorDismiss, loadingMore, loading, navigation, curPage, hasMoreData}) => {
+    const flatListRef = useRef(null);
+    const [showTopButton, setShowTopButton] = useState(false);
+    const [footerState, setFooterState] = useState(RefreshState.Idle);
 
-    constructor() {
-        super()
-        this.state = {
-            headerRefreshing: false,
-            showTopButton: false,
-            footerState: RefreshState.Idle
+    useEffect(() => {
+        // 根据hasMoreData和加载状态设置footerState
+        if (loadingMore) {
+            setFooterState(RefreshState.Refreshing);
+        } else if (error && footerState === RefreshState.Refreshing) {
+            setFooterState(RefreshState.Failure);
+        } else if (dataList.length > 0 && !loading) {
+            if (hasMoreData) {
+                setFooterState(RefreshState.Idle);
+            } else {
+                setFooterState(RefreshState.NoMoreData);
+            }
         }
-        this.flatListRef = null;
-    }
+    }, [loadingMore, error, footerState, dataList.length, loading, hasMoreData]);
 
-    renderItem = ({item, index, navigation}) => {
+    const renderItem = useCallback(({item, index}) => {
         return (
             <HomeListItem
                 onItemClicked={(url) => {
@@ -30,119 +36,95 @@ export class HomeList extends PureComponent {
                 data={item}
             />
         );
-    }
+    }, [navigation]);
 
-    handleScroll = ({nativeEvent}) => {
+    const handleScroll = useCallback(({nativeEvent}) => {
         const {contentOffset} = nativeEvent;
         if (contentOffset.y > 100) {  // 当滚动距离超过 100 时显示按钮
-            this.setState({showTopButton: true});
+            setShowTopButton(true);
         } else {
-            this.setState({showTopButton: false});
+            setShowTopButton(false);
         }
-    };
+    }, []);
 
-    handleScrollToTop = () => {
-        console.log("jumpToTop")
-        if (this.flatListRef) {
-            this.flatListRef.scrollToOffset({offset: 0, animated: true});
+    const handleScrollToTop = useCallback(() => {
+        console.log("jumpToTop");
+        if (flatListRef.current) {
+            flatListRef.current.scrollToOffset({offset: 0, animated: true});
         }
-    };
+    }, []);
 
-    render() {
-        const {dataList} = this.props;
+    const checkCanLoadMore = useCallback(() => {
+        if (footerState === RefreshState.Refreshing ||
+            footerState === RefreshState.Failure ||
+            footerState === RefreshState.NoMoreData ||
+            dataList.length === 0) {
+            return false;
+        }
+        return true;
+    }, [footerState, dataList.length]);
 
-        return (
-            <View style={styles.container}>
-                <FlatList
-                    ref={(ref) => (this.flatListRef = ref)}
-                    onScroll={this.handleScroll}
-                    showsVerticalScrollIndicator={false}
-                    refreshing={this.state.headerRefreshing}
-                    onEndReached={() => {
-                        this.beginFooterRefresh()
-                    }}
-                    onEndReachedThreshold={0.1}
-                    ListFooterComponent={this._renderFooter}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.headerRefreshing}
-                            onRefresh={() => {
-                                this.setState({
-                                    refreshing: true
-                                });
-                                fetchHomeList(() => {
-                                    this.setState({
-                                        refreshing: false
-                                    });
-                                })
-                            }}
-                            tintColor="#2196F3"
-                            colors={["#2196F3"]}
-                        />
-                    }
-                    data={dataList}
-                    renderItem={({item, index}) => this.renderItem({item, index, navigation: this.props.navigation})}
-                    keyExtractor={(item, index) => index.toString()}
-                />
-                {
-                    this.state.showTopButton &&
-                    <TouchableOpacity style={styles.jumpToTop} activeOpacity={0.8} pointerEvents="box-none" onPress={() => {
-                        this.handleScrollToTop()
-                    }}>
-                        <Image source={require('assets/toTop.png')} style={{width: 50, height: 50}}/>
-                    </TouchableOpacity>
-                }
-            </View>
-        );
-    }
+    const beginFooterRefresh = useCallback(() => {
+        console.log("beginFooterRefresh called, checkCanLoadMore:", checkCanLoadMore());
+        console.log("footerState:", footerState);
+        console.log("dataList.length:", dataList.length);
+        console.log("hasMoreData:", hasMoreData);
+        
+        if (!checkCanLoadMore()) {
+            return;
+        }
+        
+        // 调用父组件传递的加载更多函数
+        if (onLoadMore) {
+            onLoadMore();
+        }
+    }, [onLoadMore, checkCanLoadMore, footerState, dataList.length, hasMoreData]);
 
-    _renderFooter = () => {
+    const _renderFooter = useCallback(() => {
         return (
             <RefreshFooter
-                state={this.state.footerState}
-                onRetryLoading={() => {
-                    this.beginFooterRefresh()
-                }}
+                state={footerState}
+                onRetryLoading={beginFooterRefresh}
             />
-        )
-    };
+        );
+    }, [footerState, beginFooterRefresh]);
 
-
-    beginFooterRefresh() {
-        if (!this.checkCanLoadMore()) {
-            return
-        }
-        this.setState({
-            footerState: RefreshState.Refreshing
-        })
-        loadMoreHomeList(this.props.curPage, (dataList) => {
-            if (dataList.length === 0) {
-                this.setState({
-                    footerState: RefreshState.NoMoreData
-                })
-            } else {
-                this.setState({
-                    footerState: RefreshState.Idle
-                })
-            }
-        }, () => {
-            this.setState({
-                footerState: RefreshState.Failure
-            })
-        })
-    }
-
-    checkCanLoadMore() {
-        if (this.state.footerState === RefreshState.Refreshing ||
-            this.state.footerState === RefreshState.Failure ||
-            this.state.footerState === RefreshState.NoMoreData ||
-            this.props.dataList.length === 0) {
-            return false
-        }
-        return true
-    }
-
-}
+    return (
+        <View style={styles.container}>
+            <FlatList
+                ref={flatListRef}
+                onScroll={handleScroll}
+                showsVerticalScrollIndicator={false}
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                onEndReached={beginFooterRefresh}
+                onEndReachedThreshold={0.1}
+                ListFooterComponent={_renderFooter}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                        tintColor="#2196F3"
+                        colors={["#2196F3"]}
+                    />
+                }
+                data={dataList}
+                renderItem={renderItem}
+                keyExtractor={(item, index) => index.toString()}
+            />
+            {showTopButton && (
+                <TouchableOpacity 
+                    style={styles.jumpToTop} 
+                    activeOpacity={0.8} 
+                    pointerEvents="box-none" 
+                    onPress={handleScrollToTop}
+                >
+                    <Image source={require('../../../assets/toTop.png')} style={{width: 50, height: 50}}/>
+                </TouchableOpacity>
+            )}
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -155,3 +137,5 @@ const styles = StyleSheet.create({
         right: 10
     }
 })
+
+export default HomeList;

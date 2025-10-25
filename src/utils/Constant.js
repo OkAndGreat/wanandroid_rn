@@ -1,13 +1,5 @@
 import {MMKV} from "react-native-mmkv";
 
-class ActionTypes {
-    static FETCH_HOME_LIST = 'FETCH_HOME_LIST' // 请求首页列表
-    static LOAD_MORE_HOME_LIST = 'LOAD_MORE_HOME_LIST' // 加载更多首页列表
-    static FETCH_HOME_BANNER = 'FETCH_HOME_BANNER'
-    static LOGIN = 'LOGIN'
-    static UN_LOGIN = 'UN_LOGIN'
-}
-
 class BottomTabName {
     static BOTTOM_TAB_NAME_HOME = "首页"
     static BOTTOM_TAB_NAME_ASK = "问答"
@@ -17,4 +9,4 @@ class BottomTabName {
 
 export const mmkv = new MMKV()
 
-export {ActionTypes, BottomTabName}
+export {BottomTabName}
