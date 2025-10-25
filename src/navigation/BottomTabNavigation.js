@@ -2,11 +2,11 @@ import React, {PureComponent} from "react";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {BottomTabName} from "../utils/Constant";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import HomeScreen from "../pages/home/HomeScreen";
-import AskScreen from "../pages/ask/AskScreen";
-import SystemScreen from "../pages/system/SystemScreen";
+import HomeScreen from "../features/home/HomeScreen";
+import AskScreen from "../features/ask/AskScreen";
+import SystemScreen from "../features/system/SystemScreen";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
-import MineScreen from "../pages/mine/MineScreen";
+import MineScreen from "../features/mine/MineScreen";
 
 
 const Tab = createBottomTabNavigator();

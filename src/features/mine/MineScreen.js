@@ -1,9 +1,9 @@
 import React, {PureComponent} from "react";
 import {Image, StyleSheet, Text, View} from "react-native";
 import {connect} from "react-redux";
-import MineSingleItem from "./component/MineSingleItem";
-import {TouchableOpacityWithoutFeedback} from "components/TouchableOpacityWithoutFeedback";
-import Color from "utils/Color";
+import MineSingleItem from "./components/MineSingleItem";
+import Color from "../../utils/Color";
+import {TouchableOpacityWithoutFeedback} from "../../components/TouchableOpacityWithoutFeedback";
 
 class MineScreen extends PureComponent {
 

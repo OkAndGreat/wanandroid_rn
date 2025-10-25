@@ -1,0 +1,3 @@
+export const DARK_MODE_MMKV_KEY = "DARK_MODE_MMKV";
+export const LOOP_MODE_MMKV_KEY = "LOOP_MODE_MMKV";
+export const TOP_MODE_MMKV_KEY = "TOP_MODE_MMKV";

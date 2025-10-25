@@ -2,9 +2,10 @@ import React, {useEffect, useCallback} from "react";
 import {StyleSheet, Text, View, RefreshControl} from "react-native";
 import {useSelector, useDispatch} from "react-redux";
 import CommonHeader from "../../components/CommonHeader";
-import HomeList from "./component/HomeList";
+import HomeList from "./components/HomeList";
 import Banner from "../../components/Banner";
-import {clearError, fetchHomeBanner, fetchHomeList, loadMoreHomeList} from "features/home";
+import {fetchHomeList, loadMoreHomeList, fetchHomeBanner} from "./store/homeThunks";
+import {clearError} from "./store/homeSlice";
 
 const HomeScreen = ({navigation}) => {
     const dispatch = useDispatch();
