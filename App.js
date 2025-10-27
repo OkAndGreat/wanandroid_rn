@@ -19,6 +19,7 @@ import BottomTabNavigation from "./src/navigation/BottomTabNavigation";
 import {SystemSettingsPage} from "./src/features/mine/pages/setting/SystemSettingsPage";
 import NativeStackNavigator from "@react-navigation/native-stack/src/navigators/createNativeStackNavigator";
 import {LoginScreen} from "./src/features/account/LoginScreen";
+import {RegisterScreen} from "./src/features/account/RegisterScreen";
 
 
 
@@ -38,8 +39,31 @@ function App() {
                         }>
                             <Stack.Screen name="BottomNavigation" component={BottomTabNavigation}/>
                             <Stack.Screen name="WebviewScreen" component={WebviewScreen}/>
-                            <Stack.Screen name="SystemSettingsPage" component={SystemSettingsPage}/>
-                            <Stack.Screen name={"LoginScreen"} component={LoginScreen}/>
+                            <Stack.Screen 
+                                name="SystemSettingsPage" 
+                                component={SystemSettingsPage}
+                                options={{
+                                    animationTypeForReplace: 'push',
+                                    presentation: 'card',
+                                    animation: 'slide_from_right'
+                                }}
+                            />
+                            <Stack.Screen name={"LoginScreen"}
+                             component={LoginScreen}
+                              options={{
+                                    animationTypeForReplace: 'push',
+                                    presentation: 'card',
+                                    animation: 'slide_from_right'
+                                }}
+                             />
+                            <Stack.Screen name={"RegisterScreen"}
+                             component={RegisterScreen}
+                              options={{
+                                    animationTypeForReplace: 'push',
+                                    presentation: 'card',
+                                    animation: 'slide_from_right'
+                                }}
+                             />
                         </Stack.Navigator>
 
                     </NavigationContainer>

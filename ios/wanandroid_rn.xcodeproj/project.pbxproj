@@ -16,6 +16,7 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		DE743FF52F734B6A925435CB /* antfill.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7F1151E19F1641E19970950D /* antfill.ttf */; };
 		506E3B014F19490389B8823D /* antoutline.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A4080D19F944AF08015F3AD /* antoutline.ttf */; };
+		1234567890ABCDEF12345678 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8765432109FEDCBA87654321 /* Ionicons.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		7F1151E19F1641E19970950D /* antfill.ttf */ = {isa = PBXFileReference; name = "antfill.ttf"; path = "../node_modules/@ant-design/icons-react-native/fonts/antfill.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		3A4080D19F944AF08015F3AD /* antoutline.ttf */ = {isa = PBXFileReference; name = "antoutline.ttf"; path = "../node_modules/@ant-design/icons-react-native/fonts/antoutline.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		8765432109FEDCBA87654321 /* Ionicons.ttf */ = {isa = PBXFileReference; name = "Ionicons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +162,7 @@
 			children = (
 				7F1151E19F1641E19970950D /* antfill.ttf */,
 				3A4080D19F944AF08015F3AD /* antoutline.ttf */,
+				8765432109FEDCBA87654321 /* Ionicons.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -262,6 +265,7 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				DE743FF52F734B6A925435CB /* antfill.ttf in Resources */,
 				506E3B014F19490389B8823D /* antoutline.ttf in Resources */,
+				1234567890ABCDEF12345678 /* Ionicons.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

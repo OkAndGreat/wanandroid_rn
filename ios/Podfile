@@ -38,3 +38,36 @@ target 'wanandroid_rn' do
     )
   end
 end
+
+# Add the following script to include vector icon fonts
+
+use_frameworks! :linkage => :static
+
+$RNVectorIcons = '../node_modules/react-native-vector-icons'
+
+$IconFontNames = [
+  'Ionicons.ttf'
+]
+
+$IconFontPostscriptNames = {
+  'Ionicons.ttf' => 'Ionicons'
+}
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    if target.name == 'wanandroid_rn'
+      target.build_configurations.each do |config|
+        config.build_settings['OTHER_LDFLAGS'] ||= '$(inherited)'
+        config.build_settings['OTHER_LDFLAGS'] << '-ObjC'
+      end
+    end
+  end
+
+  installer.pods_project.targets.each do |target|
+    if $IconFontNames.include?(target.name)
+      target.build_configurations.each do |config|
+        config.build_settings['POSTCOMPILE_SCRIPT'] = "../../#{$RNVectorIcons}/build_ios.sh"
+      end
+    end
+  end
+end

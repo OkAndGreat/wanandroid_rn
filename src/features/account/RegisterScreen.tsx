@@ -5,7 +5,7 @@ import {useSafeAreaInsets} from "react-native-safe-area-context";
 import Color from "../../utils/Color";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-export const LoginScreen: (navigationDes: Descriptor<any, any, any>) => void = (navigationDes: Descriptor<any, any, any>) => {
+export const RegisterScreen: (navigationDes: Descriptor<any, any, any>) => void = (navigationDes: Descriptor<any, any, any>) => {
     const insets = useSafeAreaInsets();
     const {navigation} = navigationDes;
 
@@ -21,8 +21,8 @@ export const LoginScreen: (navigationDes: Descriptor<any, any, any>) => void = (
                 <Text style={styles.subtitle}>本APP由wangzhongtai独立开发</Text>
             </View>
             <View style={styles.lowerContainer}>
-                <TouchableOpacity style={styles.registerButton} onPress={() => navigation.navigate('RegisterScreen')}>
-                    <Text style={styles.registerText}>去注册</Text>
+                <TouchableOpacity style={styles.registerButton} onPress={() => navigation.navigate('LoginScreen')}>
+                    <Text style={styles.registerText}>去登录</Text>
                     <Ionicons name="arrow-forward-circle-outline" size={16} color={Color.primary}/>
                 </TouchableOpacity>
                 <View style={styles.inputContainer}>
@@ -42,8 +42,17 @@ export const LoginScreen: (navigationDes: Descriptor<any, any, any>) => void = (
                         secureTextEntry
                     />
                 </View>
+                <View style={styles.inputContainer}>
+                    <Ionicons name="lock-closed-outline" size={20} color="gray" style={styles.inputIcon}/>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="请确认密码"
+                        placeholderTextColor="gray"
+                        secureTextEntry
+                    />
+                </View>
                 <TouchableOpacity style={styles.loginButton}>
-                    <Text style={styles.loginButtonText}>登录</Text>
+                    <Text style={styles.loginButtonText}>注册</Text>
                 </TouchableOpacity>
             </View>
         </View>
