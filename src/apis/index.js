@@ -9,3 +9,18 @@ export function getHomeList(page = 0) {
 export async function getHomeBanner() {
     return await httpUtil.get('banner/json');
 }
+
+// 用户登录
+export function login(username, password) {
+    return httpUtil.post('user/login', { username, password });
+}
+
+// 获取用户信息
+export function getUserInfo() {
+    return httpUtil.get('user/lg/userinfo/json');
+}
+
+// 退出登录
+export function logout() {
+    return httpUtil.get('user/logout/json');
+}

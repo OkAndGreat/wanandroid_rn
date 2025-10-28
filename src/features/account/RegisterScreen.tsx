@@ -1,6 +1,6 @@
 import {Descriptor} from "@react-navigation/core/src/types";
 import {Image, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
-import React from "react";
+import React, {useState} from "react";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import Color from "../../utils/Color";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -8,6 +8,8 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 export const RegisterScreen: (navigationDes: Descriptor<any, any, any>) => void = (navigationDes: Descriptor<any, any, any>) => {
     const insets = useSafeAreaInsets();
     const {navigation} = navigationDes;
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     return (
         <View style={styles.container}>
@@ -23,7 +25,7 @@ export const RegisterScreen: (navigationDes: Descriptor<any, any, any>) => void 
             <View style={styles.lowerContainer}>
                 <TouchableOpacity style={styles.registerButton} onPress={() => navigation.navigate('LoginScreen')}>
                     <Text style={styles.registerText}>去登录</Text>
-                    <Ionicons name="arrow-forward-circle-outline" size={16} color={Color.primary}/>
+                    <Ionicons name="arrow-forward-circle-outline" size={16} color={Color.PRIMARY}/>
                 </TouchableOpacity>
                 <View style={styles.inputContainer}>
                     <Ionicons name="person-outline" size={20} color="gray" style={styles.inputIcon}/>
@@ -39,8 +41,19 @@ export const RegisterScreen: (navigationDes: Descriptor<any, any, any>) => void 
                         style={styles.input}
                         placeholder="请输入密码"
                         placeholderTextColor="gray"
-                        secureTextEntry
+                        secureTextEntry={!showPassword}
                     />
+                    <TouchableOpacity 
+                        style={styles.passwordToggle}
+                        onPressIn={() => setShowPassword(true)}
+                        onPressOut={() => setShowPassword(false)}
+                    >
+                        <Ionicons 
+                            name={showPassword ? "eye-off-outline" : "eye-outline"} 
+                            size={20} 
+                            color="gray" 
+                        />
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.inputContainer}>
                     <Ionicons name="lock-closed-outline" size={20} color="gray" style={styles.inputIcon}/>
@@ -48,8 +61,19 @@ export const RegisterScreen: (navigationDes: Descriptor<any, any, any>) => void 
                         style={styles.input}
                         placeholder="请确认密码"
                         placeholderTextColor="gray"
-                        secureTextEntry
+                        secureTextEntry={!showConfirmPassword}
                     />
+                    <TouchableOpacity 
+                        style={styles.passwordToggle}
+                        onPressIn={() => setShowConfirmPassword(true)}
+                        onPressOut={() => setShowConfirmPassword(false)}
+                    >
+                        <Ionicons 
+                            name={showConfirmPassword ? "eye-off-outline" : "eye-outline"} 
+                            size={20} 
+                            color="gray" 
+                        />
+                    </TouchableOpacity>
                 </View>
                 <TouchableOpacity style={styles.loginButton}>
                     <Text style={styles.loginButtonText}>注册</Text>
@@ -106,7 +130,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
     },
     registerText: {
-        color: Color.primary,
+        color: Color.PRIMARY,
         marginRight: 5,
     },
     inputContainer: {
@@ -123,8 +147,11 @@ const styles = StyleSheet.create({
         flex: 1,
         height: 40,
     },
+    passwordToggle: {
+        padding: 5,
+    },
     loginButton: {
-        backgroundColor: Color.primary,
+        backgroundColor: Color.PRIMARY,
         borderRadius: 20,
         paddingVertical: 12,
         alignItems: 'center',

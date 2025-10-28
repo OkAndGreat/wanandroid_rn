@@ -4,12 +4,83 @@ import {connect} from "react-redux";
 import MineSingleItem from "./components/MineSingleItem";
 import Color from "../../utils/Color";
 import {TouchableOpacityWithoutFeedback} from "../../shared/components/TouchableOpacityWithoutFeedback";
+import { setUserInfo } from "../account/store/accountSlice";
+import AuthUtil from "../../utils/AuthUtil";
+import { useEffect } from "react";
 
 class MineScreen extends PureComponent {
 
     constructor() {
         super();
+        this.state = {
+            userInfo: null
+        };
         this.initMineDataList();
+    }
+
+    componentDidMount() {
+        // 获取本地存储的用户信息
+        this.loadUserInfo();
+        
+        // 添加焦点监听器，当页面重新获得焦点时刷新用户信息
+        this.unsubscribe = this.props.navigation.addListener('focus', () => {
+            this.loadUserInfo();
+        });
+        
+        // 添加一个监听器，当页面出现时刷新用户信息
+        this.unsubscribeDidAppear = this.props.navigation.addListener('didFocus', () => {
+            this.loadUserInfo();
+        });
+    }
+
+    componentWillUnmount() {
+        // 移除焦点监听器
+        if (this.unsubscribe) {
+            this.unsubscribe();
+        }
+        
+        // 移除didFocus监听器
+        if (this.unsubscribeDidAppear) {
+            this.unsubscribeDidAppear();
+        }
+    }
+
+    loadUserInfo = async () => {
+        try {
+            const userInfo = await AuthUtil.getUserInfo();
+            console.log('MineScreen - 加载本地用户信息:', userInfo);
+            
+            // 如果没有用户信息，直接设置state为null
+            if (!userInfo) {
+                this.setState({ userInfo: null });
+                return;
+            }
+            
+            // 创建一个可序列化的用户信息对象
+            const serializableUserInfo = {
+                id: userInfo?.id || 0,
+                username: userInfo?.username || '',
+                password: userInfo?.password || '',
+                nickname: userInfo?.nickname || '',
+                email: userInfo?.email || '',
+                icon: userInfo?.icon || '',
+                type: userInfo?.type || 0,
+                admin: userInfo?.admin || false,
+                token: userInfo?.token || '',
+                // 将数组转换为字符串，使其可序列化
+                chapterTops: JSON.stringify(userInfo?.chapterTops || []),
+                collectIds: JSON.stringify(userInfo?.collectIds || [])
+            };
+            
+            this.setState({ userInfo: serializableUserInfo });
+            
+            // 更新Redux状态
+            this.props.dispatch(setUserInfo(serializableUserInfo));
+        } catch (error) {
+            console.error('MineScreen - 加载用户信息出错:', error);
+            // 出错时也设置为null
+            this.setState({ userInfo: null });
+        }
     }
 
     initMineDataList() {
@@ -39,19 +110,27 @@ class MineScreen extends PureComponent {
 
     render() {
 
-        const {navigation, isLogin} = this.props;
+        const {navigation} = this.props;
+        const { userInfo } = this.state;
+        const isLogin = !!userInfo;
 
         return (
             <View style={styles.container}>
                 <TouchableOpacityWithoutFeedback style={styles.profileInfo} onPress={() => {
-                    navigation.navigate('LoginScreen');
+                    if (isLogin) {
+                        // 已登录，点击可以跳转到个人信息页面
+                        // navigation.navigate('UserInfo');
+                    } else {
+                        // 未登录，跳转到登录页面
+                        navigation.navigate('LoginScreen');
+                    }
                 }}>
                     <View style={styles.profileAvatar}>
                         <Image source={require('../../assets/android.png')} style={{width: 36, height: 36}}/>
                     </View>
                     {
                         isLogin ? <View>
-                            <Text style={[styles.profileText]}></Text>
+                            <Text style={[styles.profileText]}>{userInfo.nickname || userInfo.username}</Text>
                         </View> : <View>
                             <Text style={[styles.profileText]}>点击去登录</Text>
                         </View>
@@ -65,7 +144,20 @@ class MineScreen extends PureComponent {
                     extraTextColor={item.extraTextColor}
                     name={item.name}
                     onItemClicked={(routes) => {
-                        navigation.navigate(routes)
+                        // 检查是否是需要登录的功能按钮
+                        const needLoginItems = ['我的积分', '我的分享', '我的收藏', '阅读历史', '系统设置'];
+                        
+                        if (needLoginItems.includes(item.name)) {
+                            // 如果是需要登录的功能按钮，检查登录状态
+                            if (!isLogin) {
+                                // 未登录时跳转到登录页面
+                                navigation.navigate('LoginScreen');
+                                return;
+                            }
+                        }
+                        
+                        // 已登录或不需要登录的按钮，正常导航
+                        navigation.navigate(routes);
                     }}
                 />))}
             </View>);
@@ -106,7 +198,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-        isLogin: state.account.isLogin
+        // 不再从Redux获取isLogin状态，而是从本地存储获取
+        // isLogin: state.account.isLogin
     }
 }
 
