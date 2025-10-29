@@ -110,14 +110,11 @@ class MineScreen extends PureComponent {
         }, {
             name: '阅读历史', imgName: require('../../assets/mine_read_history.png'), routes: 'SystemSettingsPage'
         }, {
-            name: '开源项目', imgName: require('../../assets/mine_github.png'), routes: 'SystemSettingsPage'
-        }, {
-            name: '关于作者',
-            imgName: require('../../assets/mine_about_author.png'),
-            routes: 'SystemSettingsPage',
-            extraText: '请他喝杯咖啡~',
-            extraTextColor: '#E57343'
-        }, {
+            name: '开源项目', 
+            imgName: require('../../assets/mine_github.png'), 
+            routes: 'WebviewScreen',
+            params: { url: 'https://github.com/OkAndGreat' }
+        }, {            name: '关于作者',            imgName: require('../../assets/mine_about_author.png'),            routes: 'AboutAuthorPage',            extraText: '请他喝杯咖啡~',            extraTextColor: '#E57343'        }, {
             name: '系统设置', imgName: require('../../assets/mine_setting.png'), routes: 'SystemSettingsPage'
         }];
     }
@@ -163,7 +160,8 @@ class MineScreen extends PureComponent {
                     imgName={item.imgName}
                     extraTextColor={item.extraTextColor}
                     name={item.name}
-                    onItemClicked={(routes) => {
+                    params={item.params}
+                    onItemClicked={(routes, params) => {
                         // 检查是否是需要登录的功能按钮
                         const needLoginItems = ['我的积分', '我的分享', '我的收藏', '阅读历史', '系统设置'];
                         
@@ -177,7 +175,11 @@ class MineScreen extends PureComponent {
                         }
                         
                         // 已登录或不需要登录的按钮，正常导航
-                        navigation.navigate(routes);
+                        if (params) {
+                            navigation.navigate(routes, params);
+                        } else {
+                            navigation.navigate(routes);
+                        }
                     }}
                 />))}
             </View>);

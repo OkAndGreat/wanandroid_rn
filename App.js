@@ -18,6 +18,7 @@ import BottomTabNavigation from "./src/navigation/BottomTabNavigation";
 import {SystemSettingsPage} from "./src/features/mine/pages/setting/SystemSettingsPage";
 import {LoginScreen} from "./src/features/account/LoginScreen";
 import {RegisterScreen} from "./src/features/account/RegisterScreen";
+import AboutAuthorPage from "./src/features/mine/pages/AboutAuthorPage";
 import AuthUtil from "./src/utils/AuthUtil";
 import {login} from "./src/apis/index";
 import { setUserInfo } from "./src/features/account/store/accountSlice";
@@ -125,6 +126,15 @@ function App() {
                                     animation: 'slide_from_right'
                                 }}
                              />
+                            <Stack.Screen 
+                                name="AboutAuthorPage" 
+                                component={AboutAuthorPage}
+                                options={{
+                                    animationTypeForReplace: 'push',
+                                    presentation: 'card',
+                                    animation: 'slide_from_right'
+                                }}
+                            />
                         </Stack.Navigator>
 
                     </NavigationContainer>

@@ -11,8 +11,9 @@ export interface MineItemData {
     imgName: ImageSourcePropType | undefined,
     routes: string,
     extraText?: string,
-    extraTextColor?: ColorValue
-    onItemClicked?: (routes: string) => void
+    extraTextColor?: ColorValue,
+    params?: any,
+    onItemClicked?: (routes: string, params?: any) => void
 }
 
 const MineSingleItem: React.FC<MineItemData> = (props) => {
@@ -20,7 +21,7 @@ const MineSingleItem: React.FC<MineItemData> = (props) => {
     return (
         <TouchableOpacity style={styles.container} activeOpacity={1} onPress={() => {
             if (props.onItemClicked) {
-                props.onItemClicked(props.routes);
+                props.onItemClicked(props.routes, props.params);
             }
         }}>
             <View style={styles.leftContent}>
