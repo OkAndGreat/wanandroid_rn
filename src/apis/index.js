@@ -15,6 +15,11 @@ export function login(username, password) {
     return httpUtil.post('user/login', { username, password });
 }
 
+// 用户注册
+export function register(username, password, repassword) {
+    return httpUtil.post('user/register', { username, password, repassword });
+}
+
 // 获取用户信息
 export function getUserInfo() {
     return httpUtil.get('user/lg/userinfo/json');
