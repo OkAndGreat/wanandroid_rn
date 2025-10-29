@@ -25,6 +25,11 @@ export function getUserInfo() {
     return httpUtil.get('user/lg/userinfo/json');
 }
 
+// 获取用户积分信息
+export function getUserCoinInfo() {
+    return httpUtil.get('lg/coin/userinfo/json');
+}
+
 // 退出登录
 export function logout() {
     return httpUtil.get('user/logout/json');

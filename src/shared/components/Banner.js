@@ -1,6 +1,6 @@
 import {PureComponent} from "react";
 import {PixelRatio, TouchableOpacity} from "react-native";
-import {DEVICE_WIDTH} from "../../utils/screenUtil";
+import {DEVICE_WIDTH, getRealDP} from "../../utils/screenUtil";
 import Color from "../../utils/Color";
 import Swiper from 'react-native-swiper';
 import {StyleSheet, Text, View, Image,} from "react-native";
@@ -21,6 +21,11 @@ class Banner extends PureComponent {
 
     render() {
         const {bannerArr} = this.props;
+
+        // 如果没有banner数据，不渲染任何内容
+        if (!bannerArr || bannerArr.length === 0) {
+            return null;
+        }
 
         return (
             <View style={styles.bannerContainer}>
@@ -47,7 +52,7 @@ class Banner extends PureComponent {
     }
 }
 
-const imageHeight = dp(380);
+const imageHeight = getRealDP(380);
 const styles = StyleSheet.create({
     defaultBg: {
         height: imageHeight
@@ -69,21 +74,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: dp(20),
+        paddingHorizontal: getRealDP(20),
         backgroundColor: 'rgba(0,0,0,0.3)',
-        height: dp(50),
+        height: getRealDP(50),
         bottom: 0,
         left: 0,
         position: 'absolute',
     },
     bannerText: {
         color: Color.WHITE,
-        fontSize: dp(28),
+        fontSize: getRealDP(28),
     },
 })
-
-function dp(designPx) {
-    return PixelRatio.roundToNearestPixel((designPx / 750) * DEVICE_WIDTH);
-}
 
 export default Banner;

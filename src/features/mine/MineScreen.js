@@ -7,13 +7,15 @@ import {TouchableOpacityWithoutFeedback} from "../../shared/components/Touchable
 import { setUserInfo } from "../account/store/accountSlice";
 import AuthUtil from "../../utils/AuthUtil";
 import { useEffect } from "react";
+import { getUserCoinInfo } from "../../apis";
 
 class MineScreen extends PureComponent {
 
     constructor() {
         super();
         this.state = {
-            userInfo: null
+            userInfo: null,
+            coinInfo: null
         };
         this.initMineDataList();
     }
@@ -52,7 +54,7 @@ class MineScreen extends PureComponent {
             
             // 如果没有用户信息，直接设置state为null
             if (!userInfo) {
-                this.setState({ userInfo: null });
+                this.setState({ userInfo: null, coinInfo: null });
                 return;
             }
             
@@ -76,10 +78,22 @@ class MineScreen extends PureComponent {
             
             // 更新Redux状态
             this.props.dispatch(setUserInfo(serializableUserInfo));
+            
+            // 获取用户积分信息
+            try {
+                const coinInfoResponse = await getUserCoinInfo();
+                console.log('MineScreen - 获取用户积分信息:', coinInfoResponse);
+                
+                if (coinInfoResponse && coinInfoResponse.errorCode === 0) {
+                    this.setState({ coinInfo: coinInfoResponse.data });
+                }
+            } catch (error) {
+                console.error('MineScreen - 获取用户积分信息出错:', error);
+            }
         } catch (error) {
             console.error('MineScreen - 加载用户信息出错:', error);
             // 出错时也设置为null
-            this.setState({ userInfo: null });
+            this.setState({ userInfo: null, coinInfo: null });
         }
     }
 
@@ -111,7 +125,7 @@ class MineScreen extends PureComponent {
     render() {
 
         const {navigation} = this.props;
-        const { userInfo } = this.state;
+        const { userInfo, coinInfo } = this.state;
         const isLogin = !!userInfo;
 
         return (
@@ -129,8 +143,14 @@ class MineScreen extends PureComponent {
                         <Image source={require('../../assets/android.png')} style={{width: 36, height: 36}}/>
                     </View>
                     {
-                        isLogin ? <View>
+                        isLogin ? <View style={styles.userInfoContainer}>
                             <Text style={[styles.profileText]}>{userInfo.nickname || userInfo.username}</Text>
+                            {coinInfo && (
+                                <View style={styles.levelRankContainer}>
+                                    <Text style={[styles.levelRankText]}>等级: {coinInfo.level || 1}</Text>
+                                    <Text style={[styles.levelRankText]}>排名: {coinInfo.rank || 0}</Text>
+                                </View>
+                            )}
                         </View> : <View>
                             <Text style={[styles.profileText]}>点击去登录</Text>
                         </View>
@@ -192,6 +212,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#427BE3'
+    },
+    userInfoContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    levelRankContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: 150,
+        marginTop: 5,
+    },
+    levelRankText: {
+        color: Color.WHITE,
+        fontSize: 14,
     }
 });
 

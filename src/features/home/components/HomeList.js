@@ -129,7 +129,7 @@ const HomeList = ({dataList, refreshing, onRefresh, onLoadMore, error, onErrorDi
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 10
+        // 移除固定marginTop，由父组件根据banner显示状态动态控制
     },
     jumpToTop: {
         position: "absolute",
