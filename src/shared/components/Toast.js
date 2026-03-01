@@ -8,7 +8,8 @@ import {
     Easing,
     Dimensions,
     Text,
-    Animated
+    Animated,
+    TouchableOpacity
 } from 'react-native';
 
 const {width, height} = Dimensions.get('window')
@@ -19,10 +20,11 @@ class AddToast extends Component {
         this.state = {
             fadeAnim: new Animated.Value(0)
         }
+        this.animation = null;
     }
 
     componentDidMount() {
-        Animated.sequence([
+        this.animation = Animated.sequence([
             // 使用宽松函数让数值随时间动起来。
             Animated.timing(                  // 随时间变化而执行动画
                 this.state.fadeAnim,            // 动画中的变量值
@@ -46,6 +48,22 @@ class AddToast extends Component {
         });
     }
 
+    handlePress = () => {
+        if (this.animation) {
+            this.animation.stop();
+        }
+        Animated.timing(
+            this.state.fadeAnim,
+            {
+                toValue: 0,
+                duration: 200,
+                useNativeDriver:true
+            }
+        ).start(() => {
+            this.props.delete && this.props.delete();
+        });
+    };
+
     render() {
         let {fadeAnim} = this.state;
         const opacity = fadeAnim.interpolate({
@@ -57,24 +75,31 @@ class AddToast extends Component {
             outputRange: [20, 0]
         });
         return (
-            <Animated.Text                 // 使用专门的可动画化的View组件
+            <TouchableOpacity 
+                activeOpacity={0.8}
+                onPress={this.handlePress}
                 style={{
-                    opacity: opacity,         // 将透明度指定为动画变量值
-                    backgroundColor: "rgba(0,0,0,0.7)",
-                    borderRadius: 10,
-                    color: "#FFF",
-                    marginTop: 5,
-                    paddingBottom: 5,
-                    paddingLeft: 15,
-                    paddingTop: 5,
-                    paddingRight: 15,
+                    opacity: opacity,
                     transform: [
                         {translateY: translateY},
                     ]
                 }}
             >
-                {this.props.children}
-            </Animated.Text>
+                <Animated.Text                 // 使用专门的可动画化的View组件
+                    style={{
+                        backgroundColor: "rgba(0,0,0,0.7)",
+                        borderRadius: 10,
+                        color: "#FFF",
+                        marginTop: 5,
+                        paddingBottom: 5,
+                        paddingLeft: 15,
+                        paddingTop: 5,
+                        paddingRight: 15,
+                    }}
+                >
+                    {this.props.children}
+                </Animated.Text>
+            </TouchableOpacity>
         )
     }
 }

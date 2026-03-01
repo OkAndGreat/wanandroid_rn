@@ -6,7 +6,6 @@ import Color from "../../utils/Color";
 import {TouchableOpacityWithoutFeedback} from "../../shared/components/TouchableOpacityWithoutFeedback";
 import { setUserInfo } from "../account/store/accountSlice";
 import AuthUtil from "../../utils/AuthUtil";
-import { useEffect } from "react";
 import { getUserCoinInfo } from "../../apis";
 
 class MineScreen extends PureComponent {
@@ -18,47 +17,41 @@ class MineScreen extends PureComponent {
             coinInfo: null
         };
         this.initMineDataList();
+        this.previousUserInfoId = null;
     }
 
     componentDidMount() {
-        // 获取本地存储的用户信息
-        this.loadUserInfo();
-        
-        // 添加焦点监听器，当页面重新获得焦点时刷新用户信息
-        this.unsubscribe = this.props.navigation.addListener('focus', () => {
-            this.loadUserInfo();
-        });
-        
-        // 添加一个监听器，当页面出现时刷新用户信息
-        this.unsubscribeDidAppear = this.props.navigation.addListener('didFocus', () => {
-            this.loadUserInfo();
-        });
+        this.loadLocalUserInfo();
     }
 
-    componentWillUnmount() {
-        // 移除焦点监听器
-        if (this.unsubscribe) {
-            this.unsubscribe();
+    componentDidUpdate(prevProps) {
+        const { userInfo: reduxUserInfo } = this.props;
+        const prevReduxUserInfo = prevProps.userInfo;
+        
+        if (reduxUserInfo && reduxUserInfo.id !== this.previousUserInfoId) {
+            console.log('MineScreen - 检测到用户信息变化，刷新数据');
+            this.previousUserInfoId = reduxUserInfo.id;
+            this.setState({ userInfo: reduxUserInfo });
+            this.fetchCoinInfo();
         }
         
-        // 移除didFocus监听器
-        if (this.unsubscribeDidAppear) {
-            this.unsubscribeDidAppear();
+        if (!reduxUserInfo && prevReduxUserInfo) {
+            console.log('MineScreen - 检测到用户退出登录');
+            this.previousUserInfoId = null;
+            this.setState({ userInfo: null, coinInfo: null });
         }
     }
 
-    loadUserInfo = async () => {
+    loadLocalUserInfo = async () => {
         try {
             const userInfo = await AuthUtil.getUserInfo();
             console.log('MineScreen - 加载本地用户信息:', userInfo);
             
-            // 如果没有用户信息，直接设置state为null
             if (!userInfo) {
                 this.setState({ userInfo: null, coinInfo: null });
                 return;
             }
             
-            // 创建一个可序列化的用户信息对象
             const serializableUserInfo = {
                 id: userInfo?.id || 0,
                 username: userInfo?.username || '',
@@ -69,31 +62,30 @@ class MineScreen extends PureComponent {
                 type: userInfo?.type || 0,
                 admin: userInfo?.admin || false,
                 token: userInfo?.token || '',
-                // 将数组转换为字符串，使其可序列化
                 chapterTops: JSON.stringify(userInfo?.chapterTops || []),
                 collectIds: JSON.stringify(userInfo?.collectIds || [])
             };
             
+            this.previousUserInfoId = serializableUserInfo.id;
             this.setState({ userInfo: serializableUserInfo });
-            
-            // 更新Redux状态
             this.props.dispatch(setUserInfo(serializableUserInfo));
-            
-            // 获取用户积分信息
-            try {
-                const coinInfoResponse = await getUserCoinInfo();
-                console.log('MineScreen - 获取用户积分信息:', coinInfoResponse);
-                
-                if (coinInfoResponse && coinInfoResponse.errorCode === 0) {
-                    this.setState({ coinInfo: coinInfoResponse.data });
-                }
-            } catch (error) {
-                console.error('MineScreen - 获取用户积分信息出错:', error);
-            }
+            this.fetchCoinInfo();
         } catch (error) {
             console.error('MineScreen - 加载用户信息出错:', error);
-            // 出错时也设置为null
             this.setState({ userInfo: null, coinInfo: null });
+        }
+    }
+
+    fetchCoinInfo = async () => {
+        try {
+            const coinInfoResponse = await getUserCoinInfo();
+            console.log('MineScreen - 获取用户积分信息:', coinInfoResponse);
+            
+            if (coinInfoResponse && coinInfoResponse.errorCode === 0) {
+                this.setState({ coinInfo: coinInfoResponse.data });
+            }
+        } catch (error) {
+            console.error('MineScreen - 获取用户积分信息出错:', error);
         }
     }
 
@@ -101,12 +93,11 @@ class MineScreen extends PureComponent {
         this.mineDataList = [{
             name: '我的积分',
             imgName: require('../../assets/mine_credit.png'),
-            routes: 'SystemSettingsPage',
-            extraText: '3463'
+            routes: 'CoinPage'
         }, {
-            name: '我的分享', imgName: require('../../assets/mine_share.png'), routes: 'SystemSettingsPage'
+            name: '我的收藏', imgName: require('../../assets/mine_collect.png'), routes: 'CollectionPage'
         }, {
-            name: '我的收藏', imgName: require('../../assets/mine_collect.png'), routes: 'SystemSettingsPage'
+            name: '我的书签', imgName: require('../../assets/bookmarkMinus.png'), routes: 'SystemSettingsPage'
         }, {
             name: '阅读历史', imgName: require('../../assets/mine_read_history.png'), routes: 'SystemSettingsPage'
         }, {
@@ -156,7 +147,7 @@ class MineScreen extends PureComponent {
                 {this.mineDataList.map((item) => (<MineSingleItem
                     key={item.name}
                     routes={item.routes}
-                    extraText={item.extraText}
+                    extraText={item.name === '我的积分' && coinInfo ? `${coinInfo.coinCount || 0}` : item.extraText}
                     imgName={item.imgName}
                     extraTextColor={item.extraTextColor}
                     name={item.name}
@@ -234,8 +225,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-        // 不再从Redux获取isLogin状态，而是从本地存储获取
-        // isLogin: state.account.isLogin
+        userInfo: state.account.userInfo
     }
 }
 

@@ -4,7 +4,7 @@ import HomeListItem from "./HomeListItem";
 import {RefreshState} from "../../../shared/components/refresh_footer/RefreshState";
 import {RefreshFooter} from "../../../shared/components/refresh_footer/RefreshFooter";
 
-const HomeList = ({dataList, refreshing, onRefresh, onLoadMore, error, onErrorDismiss, loadingMore, loading, navigation, curPage, hasMoreData}) => {
+const HomeList = ({dataList, refreshing, onRefresh, onLoadMore, error, onErrorDismiss, loadingMore, loading, navigation, curPage, hasMoreData, onCollectPress}) => {
     const flatListRef = useRef(null);
     const [showTopButton, setShowTopButton] = useState(false);
     const [footerState, setFooterState] = useState(RefreshState.Idle);
@@ -33,10 +33,15 @@ const HomeList = ({dataList, refreshing, onRefresh, onLoadMore, error, onErrorDi
                         url: url
                     });
                 }}
+                onCollectPress={(id, isCollected) => {
+                    if (onCollectPress) {
+                        onCollectPress(id, isCollected);
+                    }
+                }}
                 data={item}
             />
         );
-    }, [navigation]);
+    }, [navigation, onCollectPress]);
 
     const handleScroll = useCallback(({nativeEvent}) => {
         const {contentOffset} = nativeEvent;

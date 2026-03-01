@@ -1,5 +1,6 @@
 import {PureComponent} from "react";
 import {View, StyleSheet, Text, Touchable, TouchableOpacity} from "react-native";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 class HomeListItem extends PureComponent {
 
@@ -8,13 +9,12 @@ class HomeListItem extends PureComponent {
     }
 
     render() {
-        const {data, navigation, onItemClicked} = this.props
+        const {data, navigation, onItemClicked, onCollectPress} = this.props
 
         const authorStyle = [
             styles.author,
             data.niceShareDate.includes("前") ? {marginStart: 5} : null,
         ].filter(style => style)
-
 
         return <TouchableOpacity style={styles.container} onPress={() => {
             onItemClicked(data.link)
@@ -34,6 +34,21 @@ class HomeListItem extends PureComponent {
             </View>
             <View style={styles.bottomContainer}>
                 <Text style={styles.chapter}>{data.superChapterName + "·" + data.chapterName}</Text>
+                <TouchableOpacity 
+                    style={styles.collectButton} 
+                    onPress={(e) => {
+                        e.stopPropagation();
+                        console.log('收藏按钮点击:', data.id, data.originId, data.collect);
+                        onCollectPress(data.originId || data.id, data.collect || false);
+                    }}
+                    hitSlop={{top: 10, right: 10, bottom: 10, left: 10}}
+                >
+                    <Ionicons 
+                        name={(data.collect || false) ? "heart" : "heart-outline"} 
+                        size={24} 
+                        color={(data.collect || false) ? "#FF4757" : "#a5a5a3"} 
+                    />
+                </TouchableOpacity>
             </View>
         </TouchableOpacity>;
     }
@@ -58,7 +73,14 @@ const styles = StyleSheet.create({
     centerContainer: {
         marginBottom: 5
     },
-    bottomContainer: {flexDirection: "row"},
+    bottomContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center"
+    },
+    collectButton: {
+        marginLeft: 10
+    },
     newTag: {
         color: '#5186E7'
     },

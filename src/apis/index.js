@@ -34,3 +34,43 @@ export function getUserCoinInfo() {
 export function logout() {
     return httpUtil.get('user/logout/json');
 }
+
+// 获取积分记录
+export function getCoinRecord(page = 1) {
+    return httpUtil.get(`lg/coin/list/${page}/json`);
+}
+
+// 获取积分排行榜
+export function getCoinRanking(page = 1) {
+    return httpUtil.get(`coin/rank/${page}/json`);
+}
+
+// 获取收藏文章列表
+export function getCollectArticleList(page = 0) {
+    return httpUtil.get(`lg/collect/list/${page}/json`);
+}
+
+// 获取收藏网址列表
+export function getCollectUrlList(page = 0) {
+    return httpUtil.get(`lg/collect/usertools/json`);
+}
+
+// 取消收藏文章（用于收藏页）
+export function uncollectArticle(id, originId) {
+    return httpUtil.post(`lg/uncollect/${id}/json`, { originId });
+}
+
+// 取消收藏网址
+export function uncollectUrl(id) {
+    return httpUtil.post(`lg/collect/deletetool/json`, { id });
+}
+
+// 收藏文章
+export function collectArticle(id) {
+    return httpUtil.post(`lg/collect/${id}/json`);
+}
+
+// 取消收藏文章（用于列表页）
+export function uncollectArticleFromList(id) {
+    return httpUtil.post(`lg/uncollect_originId/${id}/json`);
+}

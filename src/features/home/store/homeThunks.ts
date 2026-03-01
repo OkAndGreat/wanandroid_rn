@@ -9,9 +9,15 @@ export const fetchHomeList = createAsyncThunk(
     try {
       dispatch(setLoading(true));
       const response = await fetchHomeData(0);
+      console.log('API 返回的数据:', response.data.datas);
+      // 确保每个文章都有 collect 字段
+      const processedData = response.data.datas.map(item => ({
+        ...item,
+        collect: item.collect || false
+      }));
       dispatch(setHomeList({
-        data: response.data.datas,
-        curPage: response.data.curPage,
+        data: processedData,
+        curPage: 0,
         hasMoreData: response.data.pageCount > response.data.curPage + 1
       }));
     } catch (error) {
@@ -27,8 +33,13 @@ export const loadMoreHomeList = createAsyncThunk(
     try {
       dispatch(setLoadingMore(true));
       const response = await fetchHomeData(page);
+      // 确保每个文章都有 collect 字段
+      const processedData = response.data.datas.map(item => ({
+        ...item,
+        collect: item.collect || false
+      }));
       dispatch(setHomeList({
-        data: response.data.datas,
+        data: processedData,
         curPage: response.data.curPage,
         hasMoreData: response.data.pageCount > response.data.curPage + 1
       }));

@@ -53,8 +53,17 @@ const homeSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
+    updateArticleCollectStatus: (state, action: PayloadAction<{ id: number, collected: boolean }>) => {
+      const { id, collected } = action.payload;
+      state.dataSource = state.dataSource.map(item => {
+        if (item.id === id || item.originId === id) {
+          return { ...item, collect: collected };
+        }
+        return item;
+      });
+    },
   },
 });
 
-export const { setHomeList, setHomeBanner, setLoading, setLoadingMore, setError, clearError } = homeSlice.actions;
+export const { setHomeList, setHomeBanner, setLoading, setLoadingMore, setError, clearError, updateArticleCollectStatus } = homeSlice.actions;
 export default homeSlice.reducer;

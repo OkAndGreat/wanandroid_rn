@@ -10,7 +10,7 @@ import SystemScreen from "./src/features/system/SystemScreen";
 import MineScreen from "./src/features/mine/MineScreen";
 import {BottomTabName} from "./src/utils/Constant";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { Button, Provider as AntProvider, Toast } from '@ant-design/react-native';
+import { Button, Provider as AntProvider } from '@ant-design/react-native';
 import {StatusBar, View} from "react-native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import WebviewScreen from "./src/features/webview/WebviewScreen";
@@ -19,9 +19,13 @@ import {SystemSettingsPage} from "./src/features/mine/pages/setting/SystemSettin
 import {LoginScreen} from "./src/features/account/LoginScreen";
 import {RegisterScreen} from "./src/features/account/RegisterScreen";
 import AboutAuthorPage from "./src/features/mine/pages/AboutAuthorPage";
+import CoinPage from "./src/features/mine/pages/CoinPage";
+import CoinRankingPage from "./src/features/mine/pages/CoinRankingPage";
+import CollectionPage from "./src/features/mine/pages/CollectionPage";
 import AuthUtil from "./src/utils/AuthUtil";
 import {login} from "./src/apis/index";
 import { setUserInfo } from "./src/features/account/store/accountSlice";
+import {showToast} from "./src/utils/CommonUtil";
 
 
 
@@ -51,7 +55,7 @@ function App() {
                     
                     if (response.errorCode === 0) {
                         console.log('App - 自动登录验证成功');
-                        Toast.success('自动登录成功');
+                        showToast('自动登录成功');
                         // 创建一个可序列化的用户信息对象
                         const serializableUserInfo = {
                             id: userInfo?.id || 0,
@@ -129,6 +133,33 @@ function App() {
                             <Stack.Screen 
                                 name="AboutAuthorPage" 
                                 component={AboutAuthorPage}
+                                options={{
+                                    animationTypeForReplace: 'push',
+                                    presentation: 'card',
+                                    animation: 'slide_from_right'
+                                }}
+                            />
+                            <Stack.Screen 
+                                name="CoinPage" 
+                                component={CoinPage}
+                                options={{
+                                    animationTypeForReplace: 'push',
+                                    presentation: 'card',
+                                    animation: 'slide_from_right'
+                                }}
+                            />
+                            <Stack.Screen 
+                                name="CoinRankingPage" 
+                                component={CoinRankingPage}
+                                options={{
+                                    animationTypeForReplace: 'push',
+                                    presentation: 'card',
+                                    animation: 'slide_from_right'
+                                }}
+                            />
+                            <Stack.Screen 
+                                name="CollectionPage" 
+                                component={CollectionPage}
                                 options={{
                                     animationTypeForReplace: 'push',
                                     presentation: 'card',

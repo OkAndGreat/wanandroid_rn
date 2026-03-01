@@ -6,9 +6,10 @@ import CommonHeader from "../../shared/components/CommonHeader";
 import HomeList from "./components/HomeList";
 import Banner from "../../shared/components/Banner";
 import {fetchHomeList, loadMoreHomeList, fetchHomeBanner} from "./store/homeThunks";
-import {clearError} from "./store/homeSlice";
+import {clearError, updateArticleCollectStatus} from "./store/homeSlice";
 import {mmkv} from "../../utils/Constant";
 import {LOOP_MODE_MMKV_KEY} from "../mine/pages/setting/SettingsPageConstans";
+import { collectArticle, uncollectArticleFromList } from "../../apis";
 
 const HomeScreen = ({navigation}) => {
     const dispatch = useDispatch();
@@ -39,6 +40,7 @@ const HomeScreen = ({navigation}) => {
 
     // 下拉刷新
     const handleRefresh = useCallback(() => {
+        console.log('开始下拉刷新');
         dispatch(fetchHomeList());
         dispatch(fetchHomeBanner());
     }, [dispatch]);
@@ -57,6 +59,32 @@ const HomeScreen = ({navigation}) => {
             dispatch(clearError());
         }
     }, [dispatch, error]);
+
+    // 处理收藏按钮点击
+    const handleCollectPress = useCallback(async (id, isCollected) => {
+        console.log('收藏操作开始:', id, isCollected);
+        try {
+            // 先更新本地状态，让用户实时看到变化
+            dispatch(updateArticleCollectStatus({ id, collected: !isCollected }));
+            
+            if (isCollected) {
+                // 取消收藏
+                console.log('执行取消收藏:', id);
+                const response = await uncollectArticleFromList(id);
+                console.log('取消收藏响应:', response);
+            } else {
+                // 收藏
+                console.log('执行收藏:', id);
+                const response = await collectArticle(id);
+                console.log('收藏响应:', response);
+            }
+            // 不再刷新整个列表，只更新本地状态
+        } catch (error) {
+            console.error('收藏操作失败:', error);
+            // 操作失败时，恢复原来的状态
+            dispatch(updateArticleCollectStatus({ id, collected: isCollected }));
+        }
+    }, [dispatch]);
 
     return (
         <View style={styles.container}>
@@ -77,6 +105,7 @@ const HomeScreen = ({navigation}) => {
                     error={error}
                     onErrorDismiss={handleErrorDismiss}
                     hasMoreData={hasMoreData}
+                    onCollectPress={handleCollectPress}
                 />
             </View>
         </View>

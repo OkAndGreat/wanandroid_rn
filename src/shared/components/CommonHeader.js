@@ -30,6 +30,9 @@ const CommonHeader = ({
                           rightIconName = undefined,
                           onRightIconPress = () => {
                           },
+                          rightIconName2 = undefined,
+                          onRightIconPress2 = () => {
+                          },
                       }) => {
     return (
         <View style={[styles.container]}>
@@ -42,6 +45,8 @@ const CommonHeader = ({
                 </View>
                 <Text style={[styles.headerText, {fontSize: headerTextSize}]}>{headerTitle}</Text>
                 <View style={[styles.rightIcon]}>
+                    {rightIconName2 ? <Ionicons name={rightIconName2} size={20} color={Color.WHITE}
+                                               onPress={onRightIconPress2} style={styles.rightIconMargin}></Ionicons> : null}
                     {rightIconName ? <Ionicons name={rightIconName} size={20} color={Color.WHITE}
                                                onPress={onRightIconPress}></Ionicons> : null}
                 </View>
@@ -80,6 +85,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: 100,
         marginEnd: 20
+    },
+    rightIconMargin: {
+        marginEnd: 15,
     }
 })
 
