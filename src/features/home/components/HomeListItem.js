@@ -1,11 +1,28 @@
 import {PureComponent} from "react";
-import {View, StyleSheet, Text, Touchable, TouchableOpacity} from "react-native";
+import {View, StyleSheet, Text, Touchable, TouchableOpacity, Animated} from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 class HomeListItem extends PureComponent {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+        this.heartFillAnimation = new Animated.Value(props.data.collect ? 1 : 0);
+    }
+    
+    componentDidUpdate(prevProps) {
+        if (prevProps.data.collect !== this.props.data.collect) {
+            if (this.props.data.collect) {
+                // 从底部漫延到顶部的动画
+                Animated.timing(this.heartFillAnimation, {
+                    toValue: 1,
+                    duration: 500,
+                    useNativeDriver: true,
+                }).start();
+            } else {
+                // 取消收藏时重置动画
+                this.heartFillAnimation.setValue(0);
+            }
+        }
     }
 
     render() {
@@ -43,11 +60,34 @@ class HomeListItem extends PureComponent {
                     }}
                     hitSlop={{top: 10, right: 10, bottom: 10, left: 10}}
                 >
-                    <Ionicons 
-                        name={(data.collect || false) ? "heart" : "heart-outline"} 
-                        size={24} 
-                        color={(data.collect || false) ? "#FF4757" : "#a5a5a3"} 
-                    />
+                    <View style={styles.heartContainer}>
+                        <Ionicons 
+                            name="heart-outline" 
+                            size={24} 
+                            color={(data.collect || false) ? "#FF4757" : "#a5a5a3"} 
+                        />
+                        <Animated.View 
+                            style={[
+                                styles.heartFillContainer,
+                                {
+                                    transform: [
+                                        {
+                                            scaleY: this.heartFillAnimation.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0, 1],
+                                            }),
+                                        },
+                                    ],
+                                },
+                            ]}
+                        >
+                            <Ionicons 
+                                name="heart" 
+                                size={24} 
+                                color="#FF4757" 
+                            />
+                        </Animated.View>
+                    </View>
                 </TouchableOpacity>
             </View>
         </TouchableOpacity>;
@@ -80,6 +120,22 @@ const styles = StyleSheet.create({
     },
     collectButton: {
         marginLeft: 10
+    },
+    heartContainer: {
+        position: 'relative',
+        width: 24,
+        height: 24,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    heartFillContainer: {
+        position: 'absolute',
+        width: 24,
+        height: 24,
+        bottom: 0,
+        transformOrigin: 'bottom',
+        overflow: 'hidden',
+        justifyContent: 'flex-end',
     },
     newTag: {
         color: '#5186E7'
